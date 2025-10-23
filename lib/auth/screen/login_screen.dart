@@ -1,6 +1,6 @@
 import 'package:amin_pass/auth/screen/forgot_password_email_screen.dart';
 import 'package:amin_pass/auth/screen/scan_shop_screen.dart';
-import 'package:amin_pass/home/home_screen.dart';
+import 'package:amin_pass/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

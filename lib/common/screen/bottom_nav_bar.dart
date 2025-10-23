@@ -1,4 +1,4 @@
-import 'package:amin_pass/home/home_screen.dart';
+import 'package:amin_pass/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavController extends StatefulWidget {
