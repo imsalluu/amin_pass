@@ -60,7 +60,7 @@ class _ResetPasswordSuccessfulScreenState
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4AF37), // gold color
+                    backgroundColor: const Color(0xFF7AA3CC), // gold color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

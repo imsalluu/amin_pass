@@ -106,7 +106,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
               width: scanBoxSize,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.red, width: 3),
+                border: Border.all(color: Color(0xFF7AA3CC), width: 3),
               ),
             ),
 
@@ -121,7 +121,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                   child: Container(
                     height: 2,
                     width: scanBoxSize - 20,
-                    color: Colors.redAccent,
+                    color: Color(0xFF7AA3CC),
                   ),
                 );
               },
@@ -171,7 +171,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: scannedCode == null
                         ? Colors.grey
-                        : const Color(0xFFD4AF37),
+                        : const Color(0xFF7AA3CC),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

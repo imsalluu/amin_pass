@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: _login,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD4AF37), // gold color
+                          backgroundColor: const Color(0xFF7AA3CC), // gold color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account? "),
+                        const Text("Don't have an account? ",style: TextStyle(color: Colors.grey),),
                         GestureDetector(
                           onTap: _signUp,
                           child: const Text(

@@ -79,7 +79,7 @@ class _OtpForgotPasswordScreenState extends State<OtpForgotPasswordScreen> {
                     Navigator.push(context,MaterialPageRoute(builder: (context)=>ResetPasswordScreen(),),);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4AF37),
+                    backgroundColor: const Color(0xFF7AA3CC),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

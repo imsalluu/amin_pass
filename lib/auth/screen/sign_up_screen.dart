@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)),
+                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
                   ),
                 ),
               ),
@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)),
+                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
                   ),
                 ),
               ),
@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)),
+                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
                   ),
                 ),
               ),
@@ -159,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)), // gold color
+                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)), // gold color
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -204,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)), // gold color
+                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)), // gold color
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -243,7 +243,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     // Proceed with sign up
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4AF37),
+                    backgroundColor: const Color(0xFF7AA3CC),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -287,8 +287,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: const Text(
                         'Log in',
                         style: TextStyle(
-                          color: Color(0xFFD4AF37),
-                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF7AA3CC),
+                          fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline, // optional
                         ),
                       ),
