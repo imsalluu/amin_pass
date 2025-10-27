@@ -1,3 +1,4 @@
+import 'package:amin_pass/card/screen/loyalty_card_screen.dart';
 import 'package:amin_pass/profile/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amin_pass/home/screen/home_screen.dart';
@@ -19,7 +20,7 @@ class _BottomNavControllerState extends State<BottomNavController>
   final List<Widget> _screens = [
     HomeScreen(),
     RewardRedeemModal(),
-    // CardScreen(),
+    LoyaltyCardScreen(),
     ProfileScreen(),
   ];
 
@@ -42,6 +43,7 @@ class _BottomNavControllerState extends State<BottomNavController>
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
         child: Container(
+          height: 90,
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(25),

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-
 class RewardRedeemModal extends StatefulWidget {
-  const RewardRedeemModal({super.key});
+  final bool startWithEarnPoints;
+
+  const RewardRedeemModal({super.key, this.startWithEarnPoints = true});
 
   @override
   State<RewardRedeemModal> createState() => _RewardRedeemModalState();
 }
 
 class _RewardRedeemModalState extends State<RewardRedeemModal> {
-  bool showEarnPoints = true;
+  late bool showEarnPoints;
   int userPoints = 120;
 
   final List<Map<String, dynamic>> earnPoints = [
@@ -55,18 +56,24 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'points': 100,
       'imageUrl':
       'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
-      'claimed': false,
+      'claimed': true,
     },
     {
-      'title': 'Free Latte',
-      'desc': 'Redeem for 100 points',
+      'title': 'Iced Americano',
+      'desc': 'Redeem for 120 points',
       'expire': '30 Nov 2025',
-      'points': 100,
+      'points': 120,
       'imageUrl':
-      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
-      'claimed': false,
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
+      'claimed': true,
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    showEarnPoints = widget.startWithEarnPoints;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +120,8 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                         'Earn Points',
                         style: TextStyle(
                           fontSize: 14,
-                          color: showEarnPoints
-                              ? Colors.black
-                              : Colors.black87,
+                          color:
+                          showEarnPoints ? Colors.black : Colors.black87,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -140,9 +146,8 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                         'View All Rewards',
                         style: TextStyle(
                           fontSize: 14,
-                          color: showEarnPoints
-                              ? Colors.black87
-                              : Colors.black,
+                          color:
+                          showEarnPoints ? Colors.black87 : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -158,6 +163,11 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                   : ViewAllRewardsTab(
                 userPoints: userPoints,
                 rewards: rewards,
+                onClaim: (points) {
+                  setState(() {
+                    userPoints -= points;
+                  });
+                },
               ),
             ),
           ],
@@ -167,8 +177,7 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
   }
 }
 
-
-
+// Earn Points Tab
 class EarnPointsTab extends StatelessWidget {
   final List<Map<String, dynamic>> earnPoints;
 
@@ -182,10 +191,11 @@ class EarnPointsTab extends StatelessWidget {
         final item = earnPoints[index];
         return Container(
           height: 159,
-          width: 408,
+          width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 6),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
+            color: Colors.white,
             border: Border.all(color: Colors.black12),
             borderRadius: BorderRadius.circular(24),
           ),
@@ -203,34 +213,44 @@ class EarnPointsTab extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Stack(
                   children: [
-                    Text(
-                      item['title'] ?? '',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.5,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 28.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['title'] ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item['desc'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item['desc'] ?? '',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black,
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        'Earn ${item['points']}',
+                        style: const TextStyle(
+                          color: Color(0xFF357ABD),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13.5,
+                        ),
                       ),
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Earn ${item['points']}',
-                style: const TextStyle(
-                  color: Color(0xFF357ABD),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13.5,
                 ),
               ),
             ],
@@ -241,16 +261,17 @@ class EarnPointsTab extends StatelessWidget {
   }
 }
 
-
-
+// View All Rewards Tab
 class ViewAllRewardsTab extends StatefulWidget {
   final int userPoints;
   final List<Map<String, dynamic>> rewards;
+  final Function(int) onClaim;
 
   const ViewAllRewardsTab({
     super.key,
     required this.userPoints,
     required this.rewards,
+    required this.onClaim,
   });
 
   @override
@@ -270,7 +291,6 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Points counter
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -283,8 +303,7 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
             const SizedBox(width: 6),
             Text(
               '$userPoints',
-              style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -295,96 +314,105 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
             itemBuilder: (context, index) {
               final item = widget.rewards[index];
               return Container(
-                height: 159,
-                width: 408,
+                height: 200,
+                width: double.infinity,
                 margin: const EdgeInsets.symmetric(vertical: 6),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(color: Colors.black12),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: Image.network(
-                        item['imageUrl'] ?? 'https://via.placeholder.com/150',
-                        width: 124,
-                        height: 124,
-                        fit: BoxFit.cover,
-                      ),
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.network(
+                            item['imageUrl'] ?? 'https://via.placeholder.com/150',
+                            width: 124,
+                            height: 124,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item['title'] ?? '',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                item['desc'] ?? '',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['title'] ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.5,
-                            ),
+                    const SizedBox(height: 8),
+                    // Expire date + Claim button in one row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Expire Date: ${item['expire']}',
+                          style: const TextStyle(
+                            fontSize: 12.5,
+                            color: Colors.grey,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item['desc'] ?? '',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.black,
+                        ),
+                        GestureDetector(
+                          onTap: item['claimed'] == true
+                              ? null
+                              : () {
+                            if (userPoints >= item['points']) {
+                              widget.onClaim(item['points']);
+                              setState(() {
+                                item['claimed'] = true;
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Not enough points!'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            width: 90,
+                            height: 36,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: item['claimed'] == true
+                                  ? Colors.grey
+                                  : const Color(0xFF7AA3CC),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              'Expire Date: ${item['expire']}',
+                              item['claimed'] == true ? 'Claimed' : 'Claim',
                               style: const TextStyle(
-                                fontSize: 12.5,
-                                color: Colors.grey,
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: item['claimed'] == true
-                          ? null
-                          : () {
-                        if (userPoints >= item['points']) {
-                          setState(() {
-                            userPoints = item['points'];
-                            item['claimed'] = true;
-                          });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Not enough points!'),
-                              backgroundColor: Colors.redAccent,
-                            ),
-                          );
-                        }
-                      },
-                      child: Container(
-                        width: 110,
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: item['claimed'] == true
-                              ? Colors.grey
-                              : const Color(0xFF7AA3CC),
-                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Text(
-                          item['claimed'] == true ? 'Claimed' : 'Claim',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

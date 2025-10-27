@@ -1,3 +1,6 @@
+import 'package:amin_pass/profile/settings/screen/privacy_policy_screen.dart';
+import 'package:amin_pass/profile/settings/screen/terms_and_condition.dart';
+import 'package:amin_pass/profile/settings/screen/notification_screen.dart';
 import 'package:amin_pass/profile/settings/screen/password_change_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +12,45 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+  Widget _sectionHeader(String text, Color textColor) => Padding(
+    padding: const EdgeInsets.fromLTRB(16, 18, 16, 10),
+    child: Text(
+      text.toUpperCase(),
+      style: TextStyle(
+        color: textColor.withOpacity(0.7),
+        fontWeight: FontWeight.w700,
+        fontSize: 12,
+        letterSpacing: .6,
+      ),
+    ),
+  );
+
+  Widget _tile({
+    required IconData icon,
+    required String title,
+    VoidCallback? onTap,
+    Widget? trailing,
+    required Color iconColor,
+    required Color textColor,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: ListTile(
+          leading: Icon(icon, size: 22, color: iconColor),
+          title: Text(title,),
+          trailing: trailing ??
+              Icon(Icons.chevron_right, color: textColor.withOpacity(0.5)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+          visualDensity: const VisualDensity(vertical: -1),
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +91,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.notifications,
                 title: "Notification",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PushNotificationsScreen()),
+                  );
+                },
               ),
               const SizedBox(height: 8),
               ProfileOption(icon: Icons.dark_mode, title: "App Theme", onTap: () {}),
@@ -57,13 +104,23 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.privacy_tip,
                 title: "Privacy Policy",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PrivacySafetyScreen()),
+                  );
+                },
               ),
               const SizedBox(height: 8),
               ProfileOption(
                 icon: Icons.help_rounded,
                 title: "Terms of Condition",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TermsAndCondition()),
+                  );
+                },
               ),
             ],
           ),
