@@ -1,3 +1,4 @@
+import 'package:amin_pass/profile/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amin_pass/home/screen/home_screen.dart';
 import 'package:amin_pass/rewards/rewards_screen.dart';
@@ -15,11 +16,11 @@ class _BottomNavControllerState extends State<BottomNavController>
     with AutomaticKeepAliveClientMixin {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
+  final List<Widget> _screens = [
     HomeScreen(),
-    RewardsScreen(),
+    RewardRedeemModal(),
     // CardScreen(),
-    // ProfileScreen(),
+    ProfileScreen(),
   ];
 
   @override
