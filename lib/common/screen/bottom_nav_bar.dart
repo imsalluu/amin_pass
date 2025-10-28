@@ -1,10 +1,9 @@
+// bottom_nav_controller.dart
 import 'package:amin_pass/card/screen/loyalty_card_screen.dart';
 import 'package:amin_pass/profile/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amin_pass/home/screen/home_screen.dart';
 import 'package:amin_pass/rewards/rewards_screen.dart';
-// import 'package:amin_pass/profile/screen/profile_screen.dart';
-// import 'package:amin_pass/card/screen/card_screen.dart';
 
 class BottomNavController extends StatefulWidget {
   const BottomNavController({super.key});
@@ -17,12 +16,13 @@ class _BottomNavControllerState extends State<BottomNavController>
     with AutomaticKeepAliveClientMixin {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    HomeScreen(),
-    RewardRedeemModal(),
-    LoyaltyCardScreen(),
-    ProfileScreen(),
-  ];
+  late bool startWithEarnPoints;
+
+  @override
+  void initState() {
+    super.initState();
+    startWithEarnPoints = true;
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -31,15 +31,28 @@ class _BottomNavControllerState extends State<BottomNavController>
   Widget build(BuildContext context) {
     super.build(context);
 
+    final List<Widget> _screens = [
+      HomeScreen(onRewardButtonTap: (isEarnPoints) {
+        setState(() {
+          _currentIndex = 1; // Rewards tab index
+          startWithEarnPoints = isEarnPoints;
+        });
+      }),
+      RewardRedeemModal(
+        key: ValueKey(startWithEarnPoints), // ✅ force rebuild when value changes
+        startWithEarnPoints: startWithEarnPoints,
+      ),
+      LoyaltyCardScreen(),
+      ProfileScreen(),
+    ];
+
+
     return Scaffold(
       extendBody: true,
-
-      // ✅ FIXED: No fade, no overlap, keeps state
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
       ),
-
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
         child: Container(

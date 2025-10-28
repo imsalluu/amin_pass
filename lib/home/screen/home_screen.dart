@@ -2,7 +2,8 @@ import 'package:amin_pass/rewards/rewards_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function(bool) onRewardButtonTap;
+  const HomeScreen({super.key, required this.onRewardButtonTap});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -14,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -134,12 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RewardRedeemModal(startWithEarnPoints: true),
-                              ),
-                            );
+                            widget.onRewardButtonTap(true); // Earn Points
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -159,12 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RewardRedeemModal(startWithEarnPoints: false),
-                              ),
-                            );
+                            widget.onRewardButtonTap(false); // View All Rewards
                           },
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 10),

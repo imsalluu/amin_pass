@@ -12,44 +12,7 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-
-  Widget _sectionHeader(String text, Color textColor) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 18, 16, 10),
-    child: Text(
-      text.toUpperCase(),
-      style: TextStyle(
-        color: textColor.withOpacity(0.7),
-        fontWeight: FontWeight.w700,
-        fontSize: 12,
-        letterSpacing: .6,
-      ),
-    ),
-  );
-
-  Widget _tile({
-    required IconData icon,
-    required String title,
-    VoidCallback? onTap,
-    Widget? trailing,
-    required Color iconColor,
-    required Color textColor,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: ListTile(
-          leading: Icon(icon, size: 22, color: iconColor),
-          title: Text(title,),
-          trailing: trailing ??
-              Icon(Icons.chevron_right, color: textColor.withOpacity(0.5)),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-          visualDensity: const VisualDensity(vertical: -1),
-        ),
-      ),
-    );
-  }
-
+  bool isDarkMode = false; // toggle state
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +43,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.lock,
                 title: "Password Change",
+                iconColor: Color(0xFF7AA3CC),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PasswordChangeScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => PasswordChangeScreen()),
                   );
                 },
               ),
@@ -91,23 +56,41 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.notifications,
                 title: "Notification",
+                iconColor: Color(0xFF7AA3CC),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PushNotificationsScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => PushNotificationsScreen()),
                   );
                 },
               ),
               const SizedBox(height: 8),
-              ProfileOption(icon: Icons.dark_mode, title: "App Theme", onTap: () {}),
+              ProfileOption(
+                icon: Icons.dark_mode,
+                title: "App Theme",
+                iconColor: Color(0xFF7AA3CC),
+                trailing: Switch(
+                  value: isDarkMode,
+                  onChanged: (val) {
+                    setState(() {
+                      isDarkMode = val;
+                    });
+                  },
+                  activeColor: Color(0xFF7AA3CC),
+                ),
+                onTap: () {},
+              ),
               const SizedBox(height: 8),
               ProfileOption(
                 icon: Icons.privacy_tip,
                 title: "Privacy Policy",
+                iconColor:Color(0xFF7AA3CC),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PrivacySafetyScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => PrivacySafetyScreen()),
                   );
                 },
               ),
@@ -115,10 +98,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.help_rounded,
                 title: "Terms of Condition",
+                iconColor: Color(0xFF7AA3CC),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TermsAndCondition()),
+                    MaterialPageRoute(
+                        builder: (context) => TermsAndCondition()),
                   );
                 },
               ),
@@ -130,17 +115,20 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 }
 
-
 class ProfileOption extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onTap;
+  final Color iconColor;
+  final Widget? trailing;
 
   const ProfileOption({
     super.key,
     required this.icon,
     required this.title,
     required this.onTap,
+    required this.iconColor,
+    this.trailing,
   });
 
   @override
@@ -149,12 +137,11 @@ class ProfileOption extends StatelessWidget {
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        leading: Icon(icon, color: Colors.blue),
-        title: Text(title, style: TextStyle(fontSize: 18)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        leading: Icon(icon, color: iconColor),
+        title: Text(title, style: const TextStyle(fontSize: 18)),
+        trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
       ),
     );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:amin_pass/auth/screen/login_screen.dart';
+import 'package:amin_pass/auth/screen/on_boarding_screen_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -32,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // 3 seconds পর অন্য screen এ navigate করতে
     Future.delayed(const Duration(seconds: 3), () {
       // এখানে আপনার main screen এ navigate করবেন
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OnboardingScreenOne()));
     });
   }
 

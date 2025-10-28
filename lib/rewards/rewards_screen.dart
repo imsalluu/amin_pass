@@ -56,7 +56,7 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'points': 100,
       'imageUrl':
       'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
-      'claimed': true,
+      'claimed': false,
     },
     {
       'title': 'Iced Americano',
@@ -65,7 +65,7 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'points': 120,
       'imageUrl':
       'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
-      'claimed': true,
+      'claimed': false,
     },
   ];
 
