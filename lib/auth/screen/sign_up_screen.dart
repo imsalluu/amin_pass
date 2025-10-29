@@ -1,5 +1,6 @@
 import 'package:amin_pass/auth/screen/login_screen.dart';
 import 'package:amin_pass/auth/screen/scan_shop_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -38,260 +39,201 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDarkMode ? Colors.black : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.black;
-    final secondaryTextColor = isDarkMode ? Colors.grey[300] : Colors.grey;
+    final secondaryTextColor = isDarkMode ? Colors.white70 : Colors.black54;
     final borderColor = const Color(0xFF7AA3CC);
+
+    final size = MediaQuery.of(context).size;
+    final isWeb = kIsWeb || size.width >= 1024;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 50),
-              Text(
-                'Sign up',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 40),
-
-              // Shop Name Field with Scan Button
-              Text(
-                'Shop Name',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _shopNameController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: 'Pizza Burg',
-                  hintStyle: TextStyle(color: secondaryTextColor),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: secondaryTextColor!),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Customer Name Field
-              Text(
-                'Customer Name',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _customerNameController,
-                decoration: InputDecoration(
-                  hintText: 'Enter your Name',
-                  hintStyle: TextStyle(color: secondaryTextColor),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: secondaryTextColor!),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Email Field
-              Text(
-                'Email Address',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: 'Enter your Email',
-                  hintStyle: TextStyle(color: secondaryTextColor),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: secondaryTextColor!),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Password Field
-              Text(
-                'Create a password',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  hintText: "Enter your password",
-                  hintStyle: TextStyle(color: secondaryTextColor),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                      color: secondaryTextColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Confirm Password Field
-              Text(
-                'Confirm password',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: _obscureRepeatPassword,
-                decoration: InputDecoration(
-                  hintText: "Repeat password",
-                  hintStyle: TextStyle(color: secondaryTextColor),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureRepeatPassword ? Icons.visibility_off : Icons.visibility,
-                      color: secondaryTextColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureRepeatPassword = !_obscureRepeatPassword;
-                      });
-                    },
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Sign Up Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_shopNameController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please scan shop QR code first')),
-                      );
-                      return;
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: borderColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text(
+        child: Center(
+          child: Container(
+            width: isWeb ? 400 : double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            decoration: isWeb
+                ? BoxDecoration(
+              color: isDarkMode ? const Color(0xFF121212) : Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade400, width: 2),
+            )
+                : null,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'Sign up',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
                   ),
-                ),
-              ),
+                  const SizedBox(height: 40),
 
-              const SizedBox(height: 20),
-
-              // Login Link
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Already have an account? ',
-                      style: TextStyle(color: secondaryTextColor),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Text(
-                        'Log in',
-                        style: TextStyle(
-                          color: borderColor,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
+                  // Shop Name Field with Scan Button
+                  Text('Shop Name', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: textColor)),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _shopNameController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hintText: 'Pizza Burg',
+                            hintStyle: TextStyle(color: secondaryTextColor),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: secondaryTextColor!),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: borderColor),
+                            ),
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Customer Name Field
+                  Text('Customer Name', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: textColor)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _customerNameController,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your Name',
+                      hintStyle: TextStyle(color: secondaryTextColor),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: secondaryTextColor!),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Email Field
+                  Text('Email Address', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: textColor)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your Email',
+                      hintStyle: TextStyle(color: secondaryTextColor),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: secondaryTextColor!),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Password Field
+                  Text('Create a password', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: textColor)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      hintText: "Enter your password",
+                      hintStyle: TextStyle(color: secondaryTextColor),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility, color: secondaryTextColor),
+                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Confirm Password Field
+                  Text('Confirm password', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: textColor)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: _obscureRepeatPassword,
+                    decoration: InputDecoration(
+                      hintText: "Repeat password",
+                      hintStyle: TextStyle(color: secondaryTextColor),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscureRepeatPassword ? Icons.visibility_off : Icons.visibility, color: secondaryTextColor),
+                        onPressed: () => setState(() => _obscureRepeatPassword = !_obscureRepeatPassword),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // Sign Up Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_shopNameController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please scan shop QR code first')),
+                          );
+                          return;
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: borderColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Sign up', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Login Link
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Already have an account? ', style: TextStyle(color: secondaryTextColor)),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            );
+                          },
+                          style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 0), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                          child: Text(
+                            'Log in',
+                            style: TextStyle(color: borderColor, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
