@@ -98,8 +98,9 @@ class TransactionHistoryScreen extends StatelessWidget {
             width: double.infinity,
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: theme.cardColor,
-              borderRadius: BorderRadius.circular(16),
+                color: isDark ? Colors.black12 : Colors.white,
+
+            borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                 width: 1.0,

@@ -255,7 +255,7 @@ class EarnPointsTab extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        'Earn ${item['points']}',
+                        'Earn Point ${item['points']}',
                         style: const TextStyle(
                           color: Color(0xFF357ABD),
                           fontWeight: FontWeight.w600,
