@@ -7,8 +7,11 @@ class OnboardingScreenOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Detect current theme
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -21,7 +24,9 @@ class OnboardingScreenOne extends StatelessWidget {
                 width: 138,
                 height: 120,
                 child: SvgPicture.asset(
-                  'assets/images/aminpass_logo.svg',
+                  isDarkMode
+                      ? 'assets/images/logo_dark.svg' // Dark mode logo
+                      : 'assets/images/aminpass_logo.svg',      // Light mode logo
                   fit: BoxFit.contain,
                 ),
               ),
@@ -38,12 +43,12 @@ class OnboardingScreenOne extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Description Text
-              const Text(
+              Text(
                 "Quickly scan the store's QR code to earn\nor redeem your loyalty points",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),

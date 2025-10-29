@@ -30,10 +30,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     _controller.forward();
 
-    // 3 seconds পর অন্য screen এ navigate করতে
+    // Navigate to OnboardingScreenOne after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
-      // এখানে আপনার main screen এ navigate করবেন
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OnboardingScreenOne()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingScreenOne()),
+      );
     });
   }
 
@@ -45,26 +47,25 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ScaleTransition(
-              scale: _animation,
-              child: Container(
-                width: 200,
-                height: 200 ,
-                child: SvgPicture.asset(
-                  'assets/images/aminpass_logo.svg',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.contain,
-                ),
-              ),
+        child: ScaleTransition(
+          scale: _animation,
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: SvgPicture.asset(
+              isDarkMode
+                  ? 'assets/images/logo_dark.svg' // Dark mode logo
+                  : 'assets/images/aminpass_logo.svg',    // Light mode logo
+              width: 200,
+              height: 200,
+              fit: BoxFit.contain,
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,11 +1,13 @@
+import 'package:amin_pass/theme/app_color.dart';
+import 'package:amin_pass/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PushNotificationsScreen extends StatefulWidget {
   const PushNotificationsScreen({super.key});
 
   @override
-  State<PushNotificationsScreen> createState() =>
-      _PushNotificationsScreenState();
+  State<PushNotificationsScreen> createState() => _PushNotificationsScreenState();
 }
 
 class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
@@ -14,12 +16,16 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
   bool notifi = true;
   bool birthday = true;
 
-
   Widget _sectionTitle(String t, Color textColor) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
-    child: Text(t,
-        style: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w700, color: textColor)),
+    child: Text(
+      t,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+      ),
+    ),
   );
 
   Widget _tile({
@@ -27,26 +33,31 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     String? subtitle,
     Widget? trailing,
     VoidCallback? onTap,
-    Color? textColor,
-    Color? subTextColor,
+    required Color textColor,
+    required Color subTextColor,
+    required Color cardColor,
   }) {
     return Material(
-      color: Colors.white,
+      color: cardColor,
+      borderRadius: BorderRadius.circular(8),
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: ListTile(
-          title: Text(title,
-              style: TextStyle(
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w500,
-                  color: textColor ?? Colors.black)),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: 15.5,
+              fontWeight: FontWeight.w500,
+              color: textColor,
+            ),
+          ),
           subtitle: subtitle == null
               ? null
-              : Text(subtitle,
-              style: TextStyle(
-                  color: subTextColor ??
-                      (textColor?.withOpacity(0.6) ?? Colors.black54),
-                  fontSize: 12.5)),
+              : Text(
+            subtitle,
+            style: TextStyle(color: subTextColor, fontSize: 12.5),
+          ),
           trailing: trailing,
           contentPadding: const EdgeInsets.symmetric(horizontal: 12),
           visualDensity: const VisualDensity(vertical: -1),
@@ -55,12 +66,12 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     );
   }
 
-  Widget _card(List<Widget> children) {
+  Widget _card(List<Widget> children, Color cardColor, Color borderColor) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white, // White background
+        color: cardColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300, width: 1), // Grey border
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Column(
         children: [
@@ -73,7 +84,6 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     );
   }
 
-
   void _save() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Notification preferences saved')),
@@ -82,20 +92,32 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final isDark = themeProvider.isDarkMode;
+
+    final bgColor = isDark ? const Color(0xFF121212) : Colors.white;
+    final textColor = isDark ? Colors.white : Colors.black;
+    final subTextColor = isDark ? Colors.white70 : Colors.black54;
+    final cardColor = isDark ?  Colors.black12 : Colors.white;
+    final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final iconColor = isDark ? Colors.white70 : Colors.black87;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: bgColor,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Notifications',
-            style: TextStyle(fontWeight: FontWeight.w700)),
+        title: Text(
+          'Notifications',
+          style: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+        ),
       ),
-      body:ListView(
+      body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
           // Master notification switch
@@ -106,14 +128,17 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
               trailing: Switch(
                 value: master,
                 activeColor: Colors.white,
-                activeTrackColor: const Color(0xff7AA3CC),
+                activeTrackColor: AppColors.primary,
                 onChanged: (v) => setState(() => master = v),
               ),
+              textColor: textColor,
+              subTextColor: subTextColor,
+              cardColor: cardColor,
             ),
-          ]),
+          ], cardColor, borderColor),
           const SizedBox(height: 25),
 
-          // SMS Updates - single card
+          // SMS Updates
           _card([
             _tile(
               title: 'SMS Updates',
@@ -121,13 +146,16 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                 value: sms && master,
                 onChanged: master ? (v) => setState(() => sms = v) : null,
                 activeColor: Colors.white,
-                activeTrackColor: const Color(0xff7AA3CC),
+                activeTrackColor: AppColors.primary,
               ),
+              textColor: textColor,
+              subTextColor: subTextColor,
+              cardColor: cardColor,
             ),
-          ]),
+          ], cardColor, borderColor),
           const SizedBox(height: 18),
 
-          // Push Notification - single card
+          // Push Notification
           _card([
             _tile(
               title: 'Push Notification',
@@ -135,13 +163,16 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                 value: notifi && master,
                 onChanged: master ? (v) => setState(() => notifi = v) : null,
                 activeColor: Colors.white,
-                activeTrackColor: const Color(0xff7AA3CC),
+                activeTrackColor: AppColors.primary,
               ),
+              textColor: textColor,
+              subTextColor: subTextColor,
+              cardColor: cardColor,
             ),
-          ]),
+          ], cardColor, borderColor),
           const SizedBox(height: 18),
 
-          // Birthday Rewards - single card
+          // Birthday Rewards
           _card([
             _tile(
               title: 'Birthday Rewards',
@@ -149,43 +180,40 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                 value: birthday && master,
                 onChanged: master ? (v) => setState(() => birthday = v) : null,
                 activeColor: Colors.white,
-                activeTrackColor: const Color(0xff7AA3CC),
+                activeTrackColor: AppColors.primary,
               ),
+              textColor: textColor,
+              subTextColor: subTextColor,
+              cardColor: cardColor,
             ),
-          ]),
-
+          ], cardColor, borderColor),
           const SizedBox(height: 24),
 
           // Save button
           SizedBox(
             height: 48,
             width: double.infinity,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xff7AA3CC), Color(0xff7AA3CC)],
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                borderRadius: BorderRadius.circular(12),
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: _save,
-                child: const Text(
-                  'Save',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: Colors.black),
+              onPressed: _save,
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.black : Colors.black,
                 ),
               ),
             ),
           ),
         ],
-      )
-
+      ),
     );
   }
 }

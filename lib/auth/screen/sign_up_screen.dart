@@ -35,48 +35,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? Colors.black : Colors.white;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final secondaryTextColor = isDarkMode ? Colors.grey[300] : Colors.grey;
+    final borderColor = const Color(0xFF7AA3CC);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               const SizedBox(height: 50),
-              const Text(
+              Text(
                 'Sign up',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 40),
 
               // Shop Name Field with Scan Button
-              const Text(
+              Text(
                 'Shop Name',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _shopNameController,
-                readOnly: true, // Make it read-only since it comes from QR
+                readOnly: true,
                 decoration: InputDecoration(
                   hintText: 'Pizza Burg',
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: secondaryTextColor!),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
+                    borderSide: BorderSide(color: borderColor),
                   ),
                 ),
               ),
@@ -84,12 +90,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
 
               // Customer Name Field
-              const Text(
+              Text(
                 'Customer Name',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
@@ -97,13 +103,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _customerNameController,
                 decoration: InputDecoration(
                   hintText: 'Enter your Name',
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: secondaryTextColor!),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
+                    borderSide: BorderSide(color: borderColor),
                   ),
                 ),
               ),
@@ -111,12 +118,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
 
               // Email Field
-              const Text(
+              Text(
                 'Email Address',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
@@ -125,13 +132,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Enter your Email',
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: secondaryTextColor!),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
+                    borderSide: BorderSide(color: borderColor),
                   ),
                 ),
               ),
@@ -139,32 +147,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
 
               // Password Field
-              const Text(
+              Text(
                 'Create a password',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _passwordController,
-                obscureText: _obscurePassword, // toggle works here
+                obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   hintText: "Enter your password",
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)), // gold color
+                    borderSide: BorderSide(color: borderColor),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.grey,
+                      color: secondaryTextColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -173,43 +182,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
-                  return null;
-                },
               ),
-
 
               const SizedBox(height: 20),
 
               // Confirm Password Field
-              const Text(
+              Text(
                 'Confirm password',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _confirmPasswordController,
-                obscureText: _obscureRepeatPassword, // toggle works here
+                obscureText: _obscureRepeatPassword,
                 decoration: InputDecoration(
                   hintText: "Repeat password",
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFF7AA3CC)), // gold color
+                    borderSide: BorderSide(color: borderColor),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureRepeatPassword ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.grey,
+                      color: secondaryTextColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -218,13 +222,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
-                  return null;
-                },
               ),
-
 
               const SizedBox(height: 40),
 
@@ -233,17 +231,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle sign up logic here
                     if (_shopNameController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Please scan shop QR code first')),
                       );
                       return;
                     }
-                    // Proceed with sign up
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7AA3CC),
+                    backgroundColor: borderColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -267,36 +263,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Already have an account? ',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: secondaryTextColor),
                     ),
                     TextButton(
                       onPressed: () {
-                        // Handle login navigation
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const LoginScreen()),
                         );
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero, // Remove extra padding
-                        minimumSize: const Size(0, 0), // Remove minimum size constraints
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Shrink tap target
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(0, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text(
+                      child: Text(
                         'Log in',
                         style: TextStyle(
-                          color: Color(0xFF7AA3CC),
+                          color: borderColor,
                           fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline, // optional
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
                   ],
                 ),
-              )
-
+              ),
             ],
           ),
         ),

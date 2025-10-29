@@ -38,13 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
       context,
       MaterialPageRoute(builder: (context) => const QRScannerScreen()),
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
@@ -57,18 +59,26 @@ class _LoginScreenState extends State<LoginScreen> {
               Column(
                 children: [
                   SvgPicture.asset(
-                    'assets/images/aminpass_logo.svg',
+                    // Choose logo based on theme
+                    Theme.of(context).brightness == Brightness.dark
+                        ? 'assets/images/logo_dark.svg' // Dark mode logo
+                        : 'assets/images/aminpass_logo.svg',     // Light mode logo
                     height: 140,
                   ),
                 ],
               ),
               const SizedBox(height: 40),
+
               // Login title
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Log in",
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
                 ),
               ),
               const SizedBox(height: 25),
@@ -87,12 +97,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
                       decoration: InputDecoration(
                         hintText: "Enter your mail",
+                        hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.grey),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide(color: isDark ? Colors.white24 : Colors.grey),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
+                        ),
+                        filled: true,
+                        fillColor: isDark ? Colors.black12 : Colors.white,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -114,12 +133,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
                       decoration: InputDecoration(
                         hintText: "Enter your password",
+                        hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.grey),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide(color: isDark ? Colors.white24 : Colors.grey),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
+                        ),
+                        filled: true,
+                        fillColor: isDark ? Colors.black12 : Colors.white,
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -148,9 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: _forgotPassword,
-                        child: const Text(
+                        child: Text(
                           "Forgot Password",
-                          style: TextStyle(color: Colors.black87),
+                          style: TextStyle(color: isDark ? Colors.white70 : Colors.black87),
                         ),
                       ),
                     ),
@@ -163,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: _login,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF7AA3CC), // gold color
+                          backgroundColor: const Color(0xFF7AA3CC),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -180,13 +208,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account? ",style: TextStyle(color: Colors.grey),),
+                        Text(
+                          "Don't have an account? ",
+                          style: TextStyle(color: isDark ? Colors.white70 : Colors.grey),
+                        ),
                         GestureDetector(
                           onTap: _signUp,
-                          child: const Text(
+                          child: Text(
                             "Sign up",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: isDark ? Colors.white : Colors.black,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             ),

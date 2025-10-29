@@ -11,7 +11,8 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "earn",
       "id": "",
       "status": "",
-      "imageUrl": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
     },
     {
       "title": "Free Coffee Redeemed",
@@ -20,7 +21,8 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "redeem",
       "id": "",
       "status": "Complete",
-      "imageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
     },
     {
       "title": "Cafe Name",
@@ -29,7 +31,8 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "earn",
       "id": "#TXN-9282",
       "status": "",
-      "imageUrl": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
     },
     {
       "title": "Free Coffee Redeemed",
@@ -38,7 +41,8 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "redeem",
       "id": "",
       "status": "Completed",
-      "imageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
     },
     {
       "title": "Cafe Name",
@@ -47,7 +51,8 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "earn",
       "id": "#TXN-9282",
       "status": "",
-      "imageUrl": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100&h=100&fit=crop&crop=center"
     },
     {
       "title": "Free Coffee Redeemed",
@@ -56,27 +61,31 @@ class TransactionHistoryScreen extends StatelessWidget {
       "type": "redeem",
       "id": "",
       "status": "Completed",
-      "imageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
+      "imageUrl":
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop&crop=center"
     },
   ];
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text("Transaction History"),
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: theme.textTheme.bodyMedium?.color),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
+        titleTextStyle: theme.textTheme.titleLarge?.copyWith(
           fontSize: 18,
           fontWeight: FontWeight.bold,
+          color: theme.textTheme.bodyMedium?.color,
         ),
       ),
       body: ListView.builder(
@@ -86,18 +95,18 @@ class TransactionHistoryScreen extends StatelessWidget {
           final tx = transactions[index];
           return Container(
             height: 115,
-            width: 408,
+            width: double.infinity,
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardColor,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: Colors.grey.shade300, // Gray color border
-                width: 1.0, // Border width
+                color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                width: 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: isDark ? Colors.black26 : Colors.grey.withOpacity(0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -125,7 +134,6 @@ class TransactionHistoryScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-
                       // Title and Points
                       Expanded(
                         child: Column(
@@ -133,36 +141,34 @@ class TransactionHistoryScreen extends StatelessWidget {
                           children: [
                             Text(
                               tx["title"],
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: theme.textTheme.bodyMedium?.color,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               tx["subtitle"],
                               style: TextStyle(
-                                color: Colors.grey[600],
+                                color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
                                 fontSize: 12,
                               ),
                             ),
                           ],
                         ),
                       ),
-
                       // Date on the right side
                       Text(
                         tx["date"],
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: Colors.black,
+                          color: theme.textTheme.bodySmall?.color,
                         ),
                       ),
                     ],
                   ),
-
-                  // Second Row: Transaction ID (if exists)
+                  // Transaction ID
                   if (tx["id"].isNotEmpty) ...[
                     const SizedBox(height: 8),
                     Text(
@@ -173,8 +179,7 @@ class TransactionHistoryScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-
-                  // Third Row: Status (if exists)
+                  // Status
                   if (tx["status"].isNotEmpty) ...[
                     const SizedBox(height: 4),
                     Text(

@@ -1,82 +1,72 @@
 import 'package:flutter/material.dart';
 import 'app_color.dart';
 
-class AppTheme {
-  static ThemeData lightTheme = ThemeData(
+class AppThemeData {
+  static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.lightBackground,
-    primaryColor: AppColors.lightPrimary,
-    cardColor: AppColors.lightCard,
+    primaryColor: AppColors.primary,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.lightBackground,
-      iconTheme: IconThemeData(color: AppColors.lightText),
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.lightIcon),
       titleTextStyle: TextStyle(
         color: AppColors.lightText,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
-        fontSize: 16,
       ),
-      elevation: 0,
+    ),
+    iconTheme: const IconThemeData(color: AppColors.lightIcon),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: AppColors.lightText),
+      bodyMedium: TextStyle(color: AppColors.lightText),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.lightPrimary,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        elevation: 0,
-      ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.lightText,
-        side: const BorderSide(color: Colors.black12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
       ),
     ),
-    textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: AppColors.lightText),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.all(AppColors.primary),
+      trackColor: WidgetStateProperty.all(AppColors.accent.withOpacity(0.5)),
     ),
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkBackground,
-    primaryColor: AppColors.darkPrimary,
-    cardColor: AppColors.darkCard,
+    primaryColor: AppColors.primary,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkBackground,
-      iconTheme: IconThemeData(color: AppColors.darkText),
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.darkIcon),
       titleTextStyle: TextStyle(
         color: AppColors.darkText,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
-        fontSize: 16,
       ),
-      elevation: 0,
+    ),
+    iconTheme: const IconThemeData(color: AppColors.darkIcon),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: AppColors.darkText),
+      bodyMedium: TextStyle(color: AppColors.darkText),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.darkPrimary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        elevation: 0,
-      ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.darkText,
-        side: const BorderSide(color: Colors.white30),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
       ),
     ),
-    textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: AppColors.darkText),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.all(AppColors.primary),
+      trackColor: WidgetStateProperty.all(AppColors.primary.withOpacity(0.4)),
     ),
   );
 }

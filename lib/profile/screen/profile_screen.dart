@@ -3,7 +3,10 @@ import 'package:amin_pass/profile/screen/edit_profile_screen.dart';
 import 'package:amin_pass/profile/screen/my_qr_code.dart';
 import 'package:amin_pass/profile/screen/transaction_history.dart';
 import 'package:amin_pass/profile/settings/screen/setting_screen.dart';
+import 'package:amin_pass/theme/app_color.dart';
+import 'package:amin_pass/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,13 +20,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String email = "example@gmail.com";
 
   final String networkImageUrl = "https://example.com/your-image.jpg";
-
   get _selectedImage => null;
 
   void _showLogoutBottomSheet() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final textColor = theme.textTheme.bodyMedium?.color;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
@@ -35,40 +41,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Drag handle
             Container(
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: isDark ? Colors.grey.shade600 : Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 24),
-
-            // Title
-            const Text(
-              "Are You sure want to log out?",
+            Text(
+              "Are you sure you want to log out?",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                color: textColor,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-
-            // Buttons
             Row(
               children: [
-                // Cancel Button
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      side: BorderSide(color: Colors.grey.shade300),
+                      backgroundColor: Colors.transparent, // Remove back color
+                      foregroundColor: textColor,
+                      side: BorderSide(color: Colors.grey.shade400),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -76,22 +76,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: const Text(
                       "Cancel",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
+
                 ),
                 const SizedBox(width: 16),
-
-                // Logout Button
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -104,31 +101,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: const Text(
                       "Yes, Logout",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
           ],
         ),
       ),
     );
   }
 
+  bool isDarkMode(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textColor = theme.textTheme.bodyMedium?.color;
+    final cardColor = theme.cardColor;
+    final bgColor = theme.scaffoldBackgroundColor;
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: bgColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black), // Black back icon
+          icon: Icon(Icons.arrow_back_ios, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -143,8 +146,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 88,
                   height: 88,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F5),
-                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                    color: theme.colorScheme.surface.withOpacity(0.1),
+                    border: Border.all(
+                        color: isDark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: ClipRRect(
@@ -162,20 +168,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 120,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.grey,
-                        );
+                        return Icon(Icons.person,
+                            size: 40,
+                            color: textColor?.withOpacity(0.7));
                       },
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return const Center(
+                        return Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.grey,
-                            ),
+                                textColor ?? Colors.grey),
                           ),
                         );
                       },
@@ -189,25 +192,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Text(
                         "Hi, $name!",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black, // Black text color
+                          color: textColor,
                         ),
                       ),
-                      Text(
-                          email,
+                      Text(email,
                           style: TextStyle(
-                            color: Colors.grey[700], // Darker grey color
-                          )
-                      ),
+                              color: textColor?.withOpacity(0.7),
+                              fontSize: 14)),
                       const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditProfileScreen(),
+                              builder: (context) => const EditProfileScreen(),
                             ),
                           );
 
@@ -218,21 +219,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             });
                           }
                         },
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                            color: Colors.black, // White text color
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF7AA3CC), // Blue button color
-                          minimumSize: const Size(86, 24),
+                          backgroundColor: const Color(0xFF7AA3CC),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                        child: const Text(
+                          "Edit Profile",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
                         ),
                       ),
                     ],
@@ -241,65 +241,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const SizedBox(height: 40),
+
+            // Profile options
             ProfileOption(
               icon: Icons.history,
               title: "Transaction History",
-              iconColor: Color(0xff7AA3CC), // Blue icon
-              textColor: Colors.black, // Black text
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TransactionHistoryScreen(),
-                  ),
-                );
-              },
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TransactionHistoryScreen()),
+              ),
+              iconColor: const Color(0xff7AA3CC),
             ),
-            SizedBox(height: 8),
             ProfileOption(
               icon: Icons.settings,
               title: "Settings",
-              iconColor:  Color(0xff7AA3CC), // Green icon
-              textColor: Colors.black, // Black text
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingScreen()),
-                );
-              },
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingScreen()),
+              ),
+              iconColor: const Color(0xff7AA3CC),
             ),
-            SizedBox(height: 8),
             ProfileOption(
               icon: Icons.qr_code,
               title: "My QR",
-              iconColor:  Color(0xff7AA3CC), // Purple icon
-              textColor: Colors.black, // Black text
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => QrCodeScreen()),
-                );
-              },
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const QrCodeScreen()),
+              ),
+              iconColor: const Color(0xff7AA3CC),
             ),
-            SizedBox(height: 8),
-            // Logout option without arrow icon
+
+            // Logout option (dark/light mode ready)
             Card(
-              color: Colors.white,
+              color: isDark ? AppColors.darkBackground : Colors.white,
               margin: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(
+                    color: isDark ? Colors.grey.shade500 : Colors.grey.shade300),
+              ),
               child: ListTile(
-                leading: Icon(Icons.logout, color: Colors.red),
-                title: Text(
-                    "Log Out",
-                    style: TextStyle(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text(
+                  "Log Out",
+                  style: TextStyle(
                       fontSize: 18,
                       color: Colors.red,
-                      fontWeight: FontWeight.w500,
-                    )
+                      fontWeight: FontWeight.w500),
                 ),
-                // No trailing icon for logout
                 onTap: _showLogoutBottomSheet,
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -312,33 +305,43 @@ class ProfileOption extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final Color iconColor;
-  final Color textColor;
+  final Widget? trailing;
 
   const ProfileOption({
     super.key,
     required this.icon,
     required this.title,
     required this.onTap,
-    this.iconColor = Colors.blue, // Default blue color
-    this.textColor = Colors.black, // Default black color
+    required this.iconColor,
+    this.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Card(
-      color: Colors.white,
+      color: isDark ? AppColors.darkBackground : Colors.white,
+      shadowColor: isDark ? Colors.transparent : Colors.grey.shade300,
       margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isDark ? Colors.grey.shade500 : Colors.grey.shade300,
+        ),
+      ),
       child: ListTile(
         leading: Icon(icon, color: iconColor),
         title: Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-              color: textColor,
-              fontWeight: FontWeight.w500,
-            )
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            color: isDark ? Colors.white : Colors.black,
+          ),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
+        trailing: trailing ??
+            Icon(Icons.arrow_forward_ios,
+                size: 16, color: isDark ? Colors.white70 : Colors.black54),
         onTap: onTap,
       ),
     );

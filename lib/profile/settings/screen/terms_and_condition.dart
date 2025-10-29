@@ -4,46 +4,63 @@ class TermsAndCondition extends StatelessWidget {
   const TermsAndCondition({super.key});
 
   // Bullet point widget
-  Widget _bullet(String text, {Color textColor = Colors.black}) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: Icon(Icons.circle, size: 6, color: textColor),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 14, height: 1.35, color: textColor),
+  Widget _bullet(BuildContext context, String text) {
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Icon(Icons.circle, size: 6, color: textColor?.withOpacity(0.7)),
         ),
-      ),
-    ],
-  );
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 14, height: 1.35, color: textColor),
+          ),
+        ),
+      ],
+    );
+  }
 
   // Section header
-  Widget _h(String text, {Color color = Colors.black}) => Padding(
-    padding: const EdgeInsets.only(top: 18, bottom: 6),
-    child: Text(
-      text,
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: color),
-    ),
-  );
+  Widget _header(BuildContext context, String text) {
+    final color = Theme.of(context).textTheme.titleMedium?.color;
+    return Padding(
+      padding: const EdgeInsets.only(top: 18, bottom: 6),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: color,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = Theme.of(context).scaffoldBackgroundColor;
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: bgColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Terms & Condition',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textColor,
+          ),
         ),
         centerTitle: true,
       ),
@@ -52,16 +69,16 @@ class TermsAndCondition extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome to Loyalty! By using our app. You agree to the following Terms of Service.",
-              style: TextStyle(fontSize: 14, height: 1.45),
+            Text(
+              "Welcome to Loyalty! By using our app, you agree to the following Terms of Service.",
+              style: TextStyle(fontSize: 14, height: 1.45, color: textColor),
             ),
-            _h('User Eligibility:'),
-            _bullet('User must be at least 13 years old to use Loyalty. User under 18 require parental consent.'),
-            _h('Account Creation:'),
-            _bullet('You are responsible for accurate information during account creation. Do not share login credentials.'),
-            _h('Data Security:'),
-            _bullet('We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
+            _header(context, 'User Eligibility'),
+            _bullet(context, 'Users must be at least 13 years old to use Loyalty. Users under 18 require parental consent.'),
+            _header(context, 'Account Creation'),
+            _bullet(context, 'You are responsible for accurate information during account creation. Do not share login credentials.'),
+            _header(context, 'Data Security'),
+            _bullet(context, 'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
           ],
         ),
       ),

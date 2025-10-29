@@ -56,66 +56,67 @@ class _BottomNavControllerState extends State<BottomNavController>
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
         child: Container(
-          height: 90,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.white, // <-- change from Colors.black
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // lighter shadow
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white, // <-- change from Colors.black
+            elevation: 0,
+            currentIndex: _currentIndex,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedItemColor: const Color(0xFF80BFFF), // keep active color
+            unselectedItemColor: Colors.black54, // adjust unselected to contrast white
+            onTap: (index) {
+              if (_currentIndex != index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              }
+            },
+            items: [
+              _buildBarItem(
+                icon: Icons.home_outlined,
+                activeIcon: Icons.home,
+                label: 'Home',
+                isActive: _currentIndex == 0,
+              ),
+              _buildBarItem(
+                icon: Icons.card_giftcard_outlined,
+                activeIcon: Icons.card_giftcard,
+                label: 'Rewards',
+                isActive: _currentIndex == 1,
+              ),
+              _buildBarItem(
+                icon: Icons.credit_card_outlined,
+                activeIcon: Icons.credit_card,
+                label: 'Card',
+                isActive: _currentIndex == 2,
+              ),
+              _buildBarItem(
+                icon: Icons.person_outline,
+                activeIcon: Icons.person,
+                label: 'Profile',
+                isActive: _currentIndex == 3,
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(25),
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.black,
-              elevation: 0,
-              currentIndex: _currentIndex,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white70,
-              onTap: (index) {
-                if (_currentIndex != index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                }
-              },
-              items: [
-                _buildBarItem(
-                  icon: Icons.home_outlined,
-                  activeIcon: Icons.home,
-                  label: 'Home',
-                  isActive: _currentIndex == 0,
-                ),
-                _buildBarItem(
-                  icon: Icons.card_giftcard_outlined,
-                  activeIcon: Icons.card_giftcard,
-                  label: 'Rewards',
-                  isActive: _currentIndex == 1,
-                ),
-                _buildBarItem(
-                  icon: Icons.credit_card_outlined,
-                  activeIcon: Icons.credit_card,
-                  label: 'Card',
-                  isActive: _currentIndex == 2,
-                ),
-                _buildBarItem(
-                  icon: Icons.person_outline,
-                  activeIcon: Icons.person,
-                  label: 'Profile',
-                  isActive: _currentIndex == 3,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
+
+    ),
     );
   }
 
@@ -153,6 +154,7 @@ class _NavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color activeColor = const Color(0xFF80BFFF);
+    final Color inactiveColor = Colors.black; // for white background
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -160,12 +162,12 @@ class _NavIcon extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
-            color: active ? activeColor.withOpacity(0.25) : Colors.transparent,
+            color: active ? activeColor.withOpacity(0.2) : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Icon(
             active ? activeIcon : icon,
-            color: active ? activeColor : Colors.white,
+            color: active ? activeColor : inactiveColor, // updated
             size: 24,
           ),
         ),

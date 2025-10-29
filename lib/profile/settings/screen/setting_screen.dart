@@ -2,7 +2,10 @@ import 'package:amin_pass/profile/settings/screen/privacy_policy_screen.dart';
 import 'package:amin_pass/profile/settings/screen/terms_and_condition.dart';
 import 'package:amin_pass/profile/settings/screen/notification_screen.dart';
 import 'package:amin_pass/profile/settings/screen/password_change_screen.dart';
+import 'package:amin_pass/theme/app_color.dart';
+import 'package:amin_pass/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -12,24 +15,28 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool isDarkMode = false; // toggle state
-
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final isDark = themeProvider.isDarkMode;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:
+      isDark ? AppColors.darkBackground : AppColors.lightBackground,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor:
+        isDark ? AppColors.darkBackground : AppColors.lightBackground,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios_new,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Settings',
           style: TextStyle(
-            color: Colors.black,
+            color: isDark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -43,12 +50,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.lock,
                 title: "Password Change",
-                iconColor: Color(0xFF7AA3CC),
+                iconColor: AppColors.primary,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PasswordChangeScreen()),
+                        builder: (context) => const PasswordChangeScreen()),
                   );
                 },
               ),
@@ -56,28 +63,26 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.notifications,
                 title: "Notification",
-                iconColor: Color(0xFF7AA3CC),
+                iconColor: AppColors.primary,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PushNotificationsScreen()),
+                        builder: (context) => const PushNotificationsScreen()),
                   );
                 },
               ),
               const SizedBox(height: 8),
               ProfileOption(
-                icon: Icons.dark_mode,
+                icon: isDark ? Icons.light_mode : Icons.dark_mode,
                 title: "App Theme",
-                iconColor: Color(0xFF7AA3CC),
+                iconColor: AppColors.primary,
                 trailing: Switch(
-                  value: isDarkMode,
-                  onChanged: (val) {
-                    setState(() {
-                      isDarkMode = val;
-                    });
+                  value: isDark,
+                  onChanged: (value) {
+                    themeProvider.toggleTheme(value);
                   },
-                  activeColor: Color(0xFF7AA3CC),
+                  activeColor: AppColors.primary,
                 ),
                 onTap: () {},
               ),
@@ -85,12 +90,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.privacy_tip,
                 title: "Privacy Policy",
-                iconColor:Color(0xFF7AA3CC),
+                iconColor: AppColors.primary,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PrivacySafetyScreen()),
+                        builder: (context) => const PrivacySafetyScreen()),
                   );
                 },
               ),
@@ -98,12 +103,12 @@ class _SettingScreenState extends State<SettingScreen> {
               ProfileOption(
                 icon: Icons.help_rounded,
                 title: "Terms of Condition",
-                iconColor: Color(0xFF7AA3CC),
+                iconColor: AppColors.primary,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TermsAndCondition()),
+                        builder: (context) => const TermsAndCondition()),
                   );
                 },
               ),
@@ -133,13 +138,30 @@ class ProfileOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Card(
-      color: Colors.white,
+      color: isDark ? AppColors.darkBackground : Colors.white,
+      shadowColor: isDark ? Colors.transparent : Colors.grey.shade300,
       margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isDark ? Colors.grey.shade500 : Colors.grey.shade300,
+        ),
+      ),
       child: ListTile(
         leading: Icon(icon, color: iconColor),
-        title: Text(title, style: const TextStyle(fontSize: 18)),
-        trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 16),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
+        trailing: trailing ??
+            Icon(Icons.arrow_forward_ios,
+                size: 16, color: isDark ? Colors.white70 : Colors.black54),
         onTap: onTap,
       ),
     );

@@ -18,7 +18,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
-
   final String networkImageUrl = "https://example.com/your-image.jpg";
 
   Future<void> _pickImage() async {
@@ -41,21 +40,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Edit Profile",
           style: TextStyle(
-            color: Colors.black,
+            color: theme.textTheme.bodyLarge?.color,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: theme.iconTheme.color),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
@@ -64,40 +66,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           children: [
-            // Profile Image Box with network image
+            // Profile Image Box
             Stack(
               children: [
                 Container(
                   width: 88,
                   height: 88,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F5),
-                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                    color: isDark ? Colors.grey.shade800 : const Color(0xFFF5F5F5),
+                    border: Border.all(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: _selectedImage != null
-                        ? Image.file(
-                      _selectedImage!,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    )
+                        ? Image.file(_selectedImage!, width: 120, height: 120, fit: BoxFit.cover)
                         : Image.network(
                       networkImageUrl,
                       width: 120,
                       height: 120,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.person, size: 40, color: Colors.grey);
+                        return Icon(Icons.person, size: 40, color: isDark ? Colors.grey.shade400 : Colors.grey);
                       },
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return const Center(
+                        return Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                            valueColor: AlwaysStoppedAnimation<Color>(isDark ? Colors.grey.shade400 : Colors.grey),
                           ),
                         );
                       },
@@ -113,7 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: Color(0xFF7AA3CC),
+                        color: const Color(0xFF7AA3CC),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -132,16 +129,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(height: 24),
 
             // Profile Fields
-            _buildProfileField("Name", _nameController, hint: "Enter your name"),
+            _buildProfileField("Name", _nameController, hint: "Enter your name", isDark: isDark),
             const SizedBox(height: 20),
-            _buildProfileField("Email Address", _emailController, hint: "Enter your email", keyboardType: TextInputType.emailAddress),
+            _buildProfileField("Email Address", _emailController, hint: "Enter your email", keyboardType: TextInputType.emailAddress, isDark: isDark),
             const SizedBox(height: 20),
-            _buildProfileField("Number", _numberController, hint: "Enter your phone number", keyboardType: TextInputType.phone),
+            _buildProfileField("Number", _numberController, hint: "Enter your phone number", keyboardType: TextInputType.phone, isDark: isDark),
             const SizedBox(height: 20),
-            _buildProfileField("Address", _addressController, hint: "Enter your address"),
+            _buildProfileField("Address", _addressController, hint: "Enter your address", isDark: isDark),
             const SizedBox(height: 40),
 
-            // Sign In Button
+            // Save Changes Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -153,15 +150,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF7AA3CC),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text(
+                child: Text(
                   'Save Changes',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: isDark ? Colors.black : Colors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -175,26 +170,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildProfileField(String label, TextEditingController controller,
-      {String hint = "", TextInputType keyboardType = TextInputType.text}) {
+      {String hint = "", TextInputType keyboardType = TextInputType.text, required bool isDark}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black)),
+        Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
+          style: TextStyle(color: isDark ? Colors.white : Colors.black),
           decoration: InputDecoration(
             hintText: hint,
+            hintStyle: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: isDark ? Colors.grey.shade700 : Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: Color(0xFF7AA3CC)),
             ),
+            fillColor: isDark ? Colors.black12 : Colors.white,
+            filled: true,
           ),
         ),
       ],

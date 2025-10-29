@@ -58,9 +58,13 @@ class _QRScannerScreenState extends State<QRScannerScreen>
   @override
   Widget build(BuildContext context) {
     final scanBoxSize = 250.0;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? Colors.black : Colors.white;
+    final iconColor = isDarkMode ? Colors.white : Colors.black;
+    final borderColor = const Color(0xFF7AA3CC);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -74,14 +78,14 @@ class _QRScannerScreenState extends State<QRScannerScreen>
             // Transparent mask around scan box
             ColorFiltered(
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.5),
+                isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5),
                 BlendMode.srcOut,
               ),
               child: Stack(
                 children: [
                   Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? Colors.white : Colors.black,
                       backgroundBlendMode: BlendMode.dstOut,
                     ),
                   ),
@@ -91,7 +95,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                       height: scanBoxSize,
                       width: scanBoxSize,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: backgroundColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
@@ -106,7 +110,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
               width: scanBoxSize,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Color(0xFF7AA3CC), width: 3),
+                border: Border.all(color: borderColor, width: 3),
               ),
             ),
 
@@ -121,7 +125,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                   child: Container(
                     height: 2,
                     width: scanBoxSize - 20,
-                    color: Color(0xFF7AA3CC),
+                    color: borderColor,
                   ),
                 );
               },
@@ -136,13 +140,13 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.black),
+                    icon: Icon(Icons.close, color: iconColor),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  const Text(
+                  Text(
                     'Scan Shop QR Code',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: iconColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
@@ -153,7 +157,6 @@ class _QRScannerScreenState extends State<QRScannerScreen>
             ),
 
             // Manual Next Button (if auto-navigate is not preferred)
-            // ✅ Next Button (Fixed)
             if (widget.onScanned == null)
               Positioned(
                 bottom: 40,
@@ -171,7 +174,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: scannedCode == null
                         ? Colors.grey
-                        : const Color(0xFF7AA3CC),
+                        : borderColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

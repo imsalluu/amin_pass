@@ -1,5 +1,4 @@
 import 'package:amin_pass/auth/screen/login_screen.dart';
-import 'package:amin_pass/auth/screen/otp_forgot_password_screen.dart';
 import 'package:amin_pass/auth/screen/reset_password_screen.dart';
 import 'package:amin_pass/auth/screen/scan_shop_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,35 +16,39 @@ class _OtpForgotPasswordScreenState extends State<OtpForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? Colors.black : Colors.white;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final secondaryTextColor = isDarkMode ? Colors.white70 : Colors.black87;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               const SizedBox(height: 120),
-              const Text(
+
+              Text(
                 'Please Check your email',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 18),
-              const Text(
+              Text(
                 'We’ve sent a code to example@gmail.com',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black,
+                  color: secondaryTextColor,
                 ),
               ),
               const SizedBox(height: 40),
-
 
               PinCodeTextField(
                 controller: _otpTEController,
@@ -58,8 +61,13 @@ class _OtpForgotPasswordScreenState extends State<OtpForgotPasswordScreen> {
                   shape: PinCodeFieldShape.box,
                   fieldWidth: 50,
                   fieldHeight: 50,
+                  activeFillColor: backgroundColor,
+                  selectedColor: const Color(0xFF7AA3CC),
+                  inactiveColor: Colors.grey,
+                  inactiveFillColor: backgroundColor,
+                  selectedFillColor: Colors.transparent,
                 ),
-                animationDuration: Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 300),
                 appContext: context,
                 validator: (String? value) {
                   if (value == null || value.length < 4) {
@@ -67,16 +75,19 @@ class _OtpForgotPasswordScreenState extends State<OtpForgotPasswordScreen> {
                   }
                   return null;
                 },
+                textStyle: TextStyle(color: textColor),
               ),
 
               const SizedBox(height: 40),
 
-              // Sign Up Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>ResetPasswordScreen(),),);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF7AA3CC),

@@ -15,12 +15,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ Fixed Top Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Column(
@@ -30,31 +32,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       CircleAvatar(
                         radius: 26,
-                        backgroundColor: Colors.blueGrey.shade100,
-                        backgroundImage:
-                        const NetworkImage('https://picsum.photos/200'),
+                        backgroundColor: isDark ? Colors.grey.shade800 : Colors.blueGrey.shade100,
+                        backgroundImage: const NetworkImage('https://picsum.photos/200'),
                       ),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Hi, Jane!',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w700)),
-                            SizedBox(height: 2),
-                            Text("What's up"),
+                            Text(
+                              'Hi, Jane!',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.textTheme.bodyLarge?.color),
+                            ),
+                            const SizedBox(height: 2),
+                            Text("What's up", style: TextStyle(color: theme.textTheme.bodyMedium?.color)),
                           ],
                         ),
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.notifications_none, size: 28),
+                        icon: Icon(Icons.notifications_none, size: 28, color: theme.iconTheme.color),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 16),
 
                   // Points Card
@@ -74,25 +77,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: const [
                                 Icon(Icons.check_circle, color: Colors.green),
                                 SizedBox(width: 8),
-                                Text('Points',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600)),
+                                Text('Points', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,color: Colors.black)),
                               ],
                             ),
                             const SizedBox(height: 6),
                             Text(
                               '$points',
-                              style: const TextStyle(
-                                  fontSize: 28, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.black),
                             ),
                             const SizedBox(height: 6),
                             SizedBox(
                               width: 180,
                               child: Text(
                                 'You need ${100 - 70} more points to get your next reward',
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.black),
+                                style: TextStyle(fontSize: 12, color: isDark ? Colors.black : Colors.black),
                               ),
                             ),
                           ],
@@ -111,21 +109,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   value: percent,
                                   strokeWidth: 8,
                                   backgroundColor: Colors.white,
-                                  valueColor: const AlwaysStoppedAnimation<Color>(
-                                      Colors.blue),
+                                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                                 ),
                               ),
                               Text('${(percent * 100).toInt()}%',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
+                                      fontSize: 18,
+                                      color: isDark ? Colors.black : Colors.black)),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 12),
 
                   // Buttons Row
@@ -144,10 +141,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text('Earn Points',
+                          child: Text('Earn Points',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                                  color: isDark ? Colors.black : Colors.black)),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -158,16 +155,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 10),
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.black12),
+                            backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
+                            side: BorderSide(color: isDark ? Colors.white24 : Colors.black12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
                           ),
-                          child: const Text('View All Rewards',
+                          child: Text('View All Rewards',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                                  color: isDark ? Colors.white : Colors.black)),
                         ),
                       ),
                     ],
@@ -175,48 +172,45 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 10),
 
-            // ✅ Scrollable section (only this part scrolls)
+            // Scrollable section
             Expanded(
               child: SingleChildScrollView(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Upcoming Reward
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Upcoming Reward',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
-                    ),
+                    Text('Upcoming Reward',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
                     const SizedBox(height: 10),
-
                     Container(
                       height: 142,
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: isDark ? Colors.black12 : Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
+                        border: Border.all(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Business Name',
+                          Text('Business Name',
                               style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500)),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: theme.textTheme.bodyLarge?.color)),
                           const SizedBox(height: 6),
-                          const Text('Next Reward: Free Coffee',
-                              style: TextStyle(fontSize: 14)),
-                          const SizedBox(height: 10),
-                          const Text('Just 10 points away!',
+                          Text('Next Reward: Free Coffee',
                               style: TextStyle(
-                                  fontSize: 12, color: Colors.black87)),
+                                  fontSize: 14, color: theme.textTheme.bodyMedium?.color)),
+                          const SizedBox(height: 10),
+                          Text('Just 10 points away!',
+                              style: TextStyle(
+                                  fontSize: 12, color: isDark ? Colors.white70 : Colors.black87)),
                           const SizedBox(height: 10),
                           Row(
                             children: [
@@ -226,9 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: LinearProgressIndicator(
                                     value: percent,
                                     minHeight: 16,
-                                    backgroundColor: Colors.grey.shade200,
-                                    valueColor: const AlwaysStoppedAnimation(
-                                        Color(0xff7AA3CC)),
+                                    backgroundColor: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                                    valueColor: const AlwaysStoppedAnimation(Color(0xff7AA3CC)),
                                   ),
                                 ),
                               ),
@@ -238,35 +231,34 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 20),
 
                     // Recent Activity
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Recent Activity',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
-                    ),
+                    Text('Recent Activity',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
                     const SizedBox(height: 8),
 
-                    const ActivityItem(
+                    ActivityItem(
                       icon: Icons.add_circle,
                       color: Colors.green,
                       text: "5 Point earned at Cafe ABC",
                       date: "12 Oct 2025",
+                      isDark: isDark,
                     ),
-                    const ActivityItem(
+                    ActivityItem(
                       icon: Icons.card_giftcard,
-                      color: Colors.black,
+                      color: isDark ? Colors.white : Colors.black,
                       text: "Reward 'Free Coffee' redeemed",
                       date: "10 Oct 2025",
+                      isDark: isDark,
                     ),
-                    const ActivityItem(
+                    ActivityItem(
                       icon: Icons.label,
-                      color: Colors.black,
+                      color: isDark ? Colors.white : Colors.black,
                       text: "10 Points earned at store B",
                       date: "09 Oct 2025",
+                      isDark: isDark,
                     ),
                     const SizedBox(height: 60),
                   ],
@@ -285,6 +277,7 @@ class ActivityItem extends StatelessWidget {
   final Color color;
   final String text;
   final String date;
+  final bool isDark;
 
   const ActivityItem({
     super.key,
@@ -292,6 +285,7 @@ class ActivityItem extends StatelessWidget {
     required this.color,
     required this.text,
     required this.date,
+    required this.isDark,
   });
 
   @override
@@ -307,11 +301,13 @@ class ActivityItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(text,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 16)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: isDark ? Colors.white : Colors.black)),
                 const SizedBox(height: 4),
                 Text(date,
-                    style: const TextStyle(color: Colors.black, fontSize: 12)),
+                    style: TextStyle(color: isDark ? Colors.white70 : Colors.black, fontSize: 12)),
               ],
             ),
           ),

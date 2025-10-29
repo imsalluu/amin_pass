@@ -77,20 +77,24 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios_new,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Reward Redeem Modal',
           style: TextStyle(
-            color: Colors.black,
+            color: isDark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -110,18 +114,21 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                       height: 40,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12),
+                        border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
                         color: showEarnPoints
                             ? const Color(0xFF7AA3CC)
-                            : Colors.white,
+                            : theme.scaffoldBackgroundColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
                         'Earn Points',
                         style: TextStyle(
                           fontSize: 14,
-                          color:
-                          showEarnPoints ? Colors.black : Colors.black87,
+                          color: showEarnPoints
+                              ? Colors.black
+                              : isDark
+                              ? Colors.white
+                              : Colors.black87,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -136,9 +143,9 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                       height: 40,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12),
+                        border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
                         color: showEarnPoints
-                            ? Colors.white
+                            ? theme.scaffoldBackgroundColor
                             : const Color(0xFF7AA3CC),
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -146,8 +153,11 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                         'View All Rewards',
                         style: TextStyle(
                           fontSize: 14,
-                          color:
-                          showEarnPoints ? Colors.black87 : Colors.black,
+                          color: showEarnPoints
+                              ? isDark
+                              ? Colors.white
+                              : Colors.black87
+                              : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -159,10 +169,11 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
             const SizedBox(height: 16),
             Expanded(
               child: showEarnPoints
-                  ? EarnPointsTab(earnPoints: earnPoints)
+                  ? EarnPointsTab(earnPoints: earnPoints, isDark: isDark)
                   : ViewAllRewardsTab(
                 userPoints: userPoints,
                 rewards: rewards,
+                isDark: isDark,
                 onClaim: (points) {
                   setState(() {
                     userPoints -= points;
@@ -180,8 +191,9 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
 // Earn Points Tab
 class EarnPointsTab extends StatelessWidget {
   final List<Map<String, dynamic>> earnPoints;
+  final bool isDark;
 
-  const EarnPointsTab({super.key, required this.earnPoints});
+  const EarnPointsTab({super.key, required this.earnPoints, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -195,8 +207,8 @@ class EarnPointsTab extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 6),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black12),
+            color: isDark ? Colors.black12 : Colors.white,
+            border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
             borderRadius: BorderRadius.circular(24),
           ),
           child: Row(
@@ -222,17 +234,18 @@ class EarnPointsTab extends StatelessWidget {
                         children: [
                           Text(
                             item['title'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15.5,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             item['desc'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
-                              color: Colors.black,
+                              color: isDark ? Colors.white70 : Colors.black,
                             ),
                           ),
                         ],
@@ -266,12 +279,14 @@ class ViewAllRewardsTab extends StatefulWidget {
   final int userPoints;
   final List<Map<String, dynamic>> rewards;
   final Function(int) onClaim;
+  final bool isDark;
 
   const ViewAllRewardsTab({
     super.key,
     required this.userPoints,
     required this.rewards,
     required this.onClaim,
+    required this.isDark,
   });
 
   @override
@@ -289,21 +304,23 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.isDark;
+
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Icon(Icons.monetization_on, color: Colors.amber, size: 20),
+            Icon(Icons.monetization_on, color: Colors.amber, size: 20),
             const SizedBox(width: 6),
-            const Text(
+            Text(
               'Your Points',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black),
             ),
             const SizedBox(width: 6),
             Text(
               '$userPoints',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black),
             ),
           ],
         ),
@@ -319,8 +336,8 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                 margin: const EdgeInsets.symmetric(vertical: 6),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black12),
+                  color: isDark ? Colors.black12 : Colors.white,
+                  border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
@@ -344,17 +361,18 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                             children: [
                               Text(
                                 item['title'] ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15.5,
+                                  color: isDark ? Colors.white : Colors.black,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 item['desc'] ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black,
+                                  color: isDark ? Colors.white70 : Colors.black,
                                 ),
                               ),
                             ],
@@ -363,15 +381,14 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    // Expire date + Claim button in one row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'Expire Date: ${item['expire']}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12.5,
-                            color: Colors.grey,
+                            color: isDark ? Colors.white70 : Colors.grey,
                           ),
                         ),
                         GestureDetector(

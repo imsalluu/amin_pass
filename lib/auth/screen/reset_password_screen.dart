@@ -1,7 +1,4 @@
-import 'package:amin_pass/auth/screen/login_screen.dart';
-import 'package:amin_pass/auth/screen/otp_forgot_password_screen.dart';
 import 'package:amin_pass/auth/screen/reset_password_successful_screen.dart';
-import 'package:amin_pass/auth/screen/scan_shop_screen.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -16,59 +13,67 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController _repeatPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureRepeatPassword = true;
+
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? Colors.black : Colors.white;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final secondaryTextColor = isDarkMode ? Colors.white70 : Colors.black87;
+    final borderColor = const Color(0xFFD4AF37);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               const SizedBox(height: 120),
-              const Text(
+
+              Text(
                 'Reset Password',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 18),
-              const Text(
+              Text(
                 'Please type something you’ll remember',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black,
+                  color: secondaryTextColor,
                 ),
               ),
               const SizedBox(height: 40),
 
-
-              const Text(
+              // Create Password Field
+              Text(
                 'Create a password',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _newPasswordController,
-                obscureText: _obscurePassword, // toggle works here
+                obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   hintText: "Enter your password",
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)), // gold color
+                    borderSide: BorderSide(color: borderColor),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -82,38 +87,33 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
-                  return null;
-                },
               ),
-
 
               const SizedBox(height: 20),
 
               // Confirm Password Field
-              const Text(
+              Text(
                 'Confirm password',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _repeatPasswordController,
-                obscureText: _obscureRepeatPassword, // toggle works here
+                obscureText: _obscureRepeatPassword,
                 decoration: InputDecoration(
                   hintText: "Repeat password",
+                  hintStyle: TextStyle(color: secondaryTextColor),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xFFD4AF37)), // gold color
+                    borderSide: BorderSide(color: borderColor),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -127,21 +127,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
-                  return null;
-                },
               ),
 
               const SizedBox(height: 40),
 
-              // Sign Up Button
+              // Send Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>ResetPasswordSuccessfulScreen(),),);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ResetPasswordSuccessfulScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF7AA3CC),
