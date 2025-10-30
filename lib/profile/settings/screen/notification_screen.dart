@@ -94,33 +94,20 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
+    final sw = MediaQuery.of(context).size.width;
+    final isDesktop = sw >= 900;
 
     final bgColor = isDark ? const Color(0xFF121212) : Colors.white;
     final textColor = isDark ? Colors.white : Colors.black;
     final subTextColor = isDark ? Colors.white70 : Colors.black54;
-    final cardColor = isDark ?  Colors.black12 : Colors.white;
+    final cardColor = isDark ? Colors.black12 : Colors.white;
     final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
-    final iconColor = isDark ? Colors.white70 : Colors.black87;
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: bgColor,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: textColor),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Notifications',
-          style: TextStyle(fontWeight: FontWeight.w700, color: textColor),
-        ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+    final content = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
         children: [
-          // Master notification switch
+          // Master notification
           _card([
             _tile(
               title: 'Enable notifications',
@@ -136,9 +123,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
               cardColor: cardColor,
             ),
           ], cardColor, borderColor),
-          const SizedBox(height: 25),
-
-          // SMS Updates
+          const SizedBox(height: 20),
           _card([
             _tile(
               title: 'SMS Updates',
@@ -154,8 +139,6 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
             ),
           ], cardColor, borderColor),
           const SizedBox(height: 18),
-
-          // Push Notification
           _card([
             _tile(
               title: 'Push Notification',
@@ -171,8 +154,6 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
             ),
           ], cardColor, borderColor),
           const SizedBox(height: 18),
-
-          // Birthday Rewards
           _card([
             _tile(
               title: 'Birthday Rewards',
@@ -188,8 +169,6 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
             ),
           ], cardColor, borderColor),
           const SizedBox(height: 24),
-
-          // Save button
           SizedBox(
             height: 48,
             width: double.infinity,
@@ -215,5 +194,79 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
         ],
       ),
     );
+
+    if (isDesktop) {
+      return Scaffold(
+        backgroundColor: bgColor,
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              color: AppColors.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Notifications',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 800,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80),
+                    child: content,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Mobile layout
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: bgColor,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Notifications',
+          style: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        children: [
+          content,
+        ],
+      ),
+    );
   }
+
 }

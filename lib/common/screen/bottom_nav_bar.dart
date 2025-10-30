@@ -220,8 +220,8 @@ class _BottomNavControllerState extends State<BottomNavController>
                     borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.10),
-                        blurRadius: 8,
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius:20,
                         offset: const Offset(2, 0), // right side shadow
                       ),
                     ],

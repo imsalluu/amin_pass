@@ -19,14 +19,140 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
+    final sw = MediaQuery.of(context).size.width;
+    final isDesktop = sw >= 900;
 
+    final content = Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      child: Column(
+        children: [
+          ProfileOption(
+            icon: Icons.lock,
+            title: "Password Change",
+            iconColor: AppColors.primary,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PasswordChangeScreen()),
+              );
+            },
+            isDesktop: isDesktop,
+          ),
+          ProfileOption(
+            icon: Icons.notifications,
+            title: "Notification",
+            iconColor: AppColors.primary,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PushNotificationsScreen()),
+              );
+            },
+            isDesktop: isDesktop,
+          ),
+          ProfileOption(
+            icon: isDark ? Icons.light_mode : Icons.dark_mode,
+            title: "App Theme",
+            iconColor: AppColors.primary,
+            trailing: Switch(
+              value: isDark,
+              onChanged: (value) {
+                themeProvider.toggleTheme(value);
+              },
+              activeColor: AppColors.primary,
+            ),
+            onTap: () {},
+            isDesktop: isDesktop,
+          ),
+          ProfileOption(
+            icon: Icons.privacy_tip,
+            title: "Privacy Policy",
+            iconColor: AppColors.primary,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PrivacySafetyScreen()),
+              );
+            },
+            isDesktop: isDesktop,
+          ),
+          ProfileOption(
+            icon: Icons.help_rounded,
+            title: "Terms of Condition",
+            iconColor: AppColors.primary,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TermsAndCondition()),
+              );
+            },
+            isDesktop: isDesktop,
+          ),
+        ],
+      ),
+    );
+
+    // Desktop layout
+    if (isDesktop) {
+      return Scaffold(
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.lightBackground,
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              color: const Color(0xFF7AA3CC),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: 900,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80), // <-- Adjust this value
+                    child: content,
+                  ),
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      );
+    }
+
+    // Mobile layout
     return Scaffold(
-      backgroundColor:
-      isDark ? AppColors.darkBackground : AppColors.lightBackground,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.lightBackground,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor:
-        isDark ? AppColors.darkBackground : AppColors.lightBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.lightBackground,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new,
               color: isDark ? Colors.white : Colors.black),
@@ -42,80 +168,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              ProfileOption(
-                icon: Icons.lock,
-                title: "Password Change",
-                iconColor: AppColors.primary,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PasswordChangeScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              ProfileOption(
-                icon: Icons.notifications,
-                title: "Notification",
-                iconColor: AppColors.primary,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PushNotificationsScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              ProfileOption(
-                icon: isDark ? Icons.light_mode : Icons.dark_mode,
-                title: "App Theme",
-                iconColor: AppColors.primary,
-                trailing: Switch(
-                  value: isDark,
-                  onChanged: (value) {
-                    themeProvider.toggleTheme(value);
-                  },
-                  activeColor: AppColors.primary,
-                ),
-                onTap: () {},
-              ),
-              const SizedBox(height: 8),
-              ProfileOption(
-                icon: Icons.privacy_tip,
-                title: "Privacy Policy",
-                iconColor: AppColors.primary,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PrivacySafetyScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              ProfileOption(
-                icon: Icons.help_rounded,
-                title: "Terms of Condition",
-                iconColor: AppColors.primary,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TermsAndCondition()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: SingleChildScrollView(child: content),
     );
   }
 }
@@ -126,6 +179,7 @@ class ProfileOption extends StatelessWidget {
   final VoidCallback onTap;
   final Color iconColor;
   final Widget? trailing;
+  final bool isDesktop;
 
   const ProfileOption({
     super.key,
@@ -134,16 +188,21 @@ class ProfileOption extends StatelessWidget {
     required this.onTap,
     required this.iconColor,
     this.trailing,
+    this.isDesktop = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
 
-    return Card(
+    final fontSize = isDesktop ? 14.0 : 18.0;
+    final iconSize = isDesktop ? 20.0 : 24.0;
+    final paddingV = isDesktop ? 8.0 : 16.0;
+
+    final card = Card(
       color: isDark ? AppColors.darkBackground : Colors.white,
       shadowColor: isDark ? Colors.transparent : Colors.grey.shade300,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: isDesktop ? 4 : 8), // smaller vertical margin
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -151,19 +210,20 @@ class ProfileOption extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        leading: Icon(icon, color: iconColor),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: isDesktop ? 6 : 16), // smaller vertical padding
+        leading: Icon(icon, color: iconColor, size: isDesktop ? 20 : 24),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 18,
-            color: isDark ? Colors.white : Colors.black,
-          ),
+          style: TextStyle(fontSize: isDesktop ? 14 : 18, color: isDark ? Colors.white : Colors.black),
         ),
-        trailing: trailing ??
-            Icon(Icons.arrow_forward_ios,
-                size: 16, color: isDark ? Colors.white70 : Colors.black54),
+        trailing: trailing ?? Icon(Icons.arrow_forward_ios, size: 16, color: isDark ? Colors.white70 : Colors.black54),
         onTap: onTap,
       ),
     );
+
+
+    if (isDesktop) return Center(child: SizedBox(width: 600, child: card));
+
+    return card;
   }
 }

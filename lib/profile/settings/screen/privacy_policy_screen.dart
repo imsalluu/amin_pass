@@ -44,7 +44,78 @@ class PrivacySafetyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+    final sw = MediaQuery.of(context).size.width;
+    final isDesktop = sw >= 900;
 
+    final content = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Welcome to Loyalty! Your privacy is important to us. This privacy policy outlines how we collect, use, and protect your personal information when you use our app.",
+            style: TextStyle(fontSize: 14, height: 1.45, color: textColor),
+          ),
+          _header(context, 'Information We Collect'),
+          _bullet(context, 'We collect basic user information such as name, email, and location for account creation and personalized service.'),
+          _header(context, 'How We Use Your Information'),
+          _bullet(context, 'Your information is used to provide personalized rewards, improve our services, and send relevant notifications. We do not sell your data.'),
+          _header(context, 'Data Security'),
+          _bullet(context, 'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
+        ],
+      ),
+    );
+
+    if (isDesktop) {
+      return Scaffold(
+        backgroundColor: bgColor,
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              color: const Color(0xFF7AA3CC),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Privacy & Safety',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 800,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80),
+                    child: content,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Mobile layout
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
@@ -56,31 +127,13 @@ class PrivacySafetyScreen extends StatelessWidget {
         ),
         title: Text(
           'Privacy & Safety',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: textColor,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Welcome to Loyalty! Your privacy is important to us. This privacy policy outlines how we collect, use, and protect your personal information when you use our app.",
-              style: TextStyle(fontSize: 14, height: 1.45, color: textColor),
-            ),
-            _header(context, 'Information We Collect'),
-            _bullet(context, 'We collect basic user information such as name, email, and location for account creation and personalized service.'),
-            _header(context, 'How We Use Your Information'),
-            _bullet(context, 'Your information is used to provide personalized rewards, improve our services, and send relevant notifications. We do not sell your data.'),
-            _header(context, 'Data Security'),
-            _bullet(context, 'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
-          ],
-        ),
+        child: content,
       ),
     );
   }

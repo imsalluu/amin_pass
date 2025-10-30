@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.transparent, // Remove back color
+                      backgroundColor: Colors.transparent,
                       foregroundColor: textColor,
                       side: BorderSide(color: Colors.grey.shade400),
                       shape: RoundedRectangleBorder(
@@ -79,7 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
-
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -114,17 +113,207 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  bool isDarkMode(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textColor = theme.textTheme.bodyMedium?.color;
-    final cardColor = theme.cardColor;
     final bgColor = theme.scaffoldBackgroundColor;
     final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final sw = MediaQuery.of(context).size.width;
+    final isDesktop = sw >= 900;
 
+    final mainContent = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Profile header
+          Row(
+            children: [
+              Container(
+                width: 88,
+                height: 88,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface.withOpacity(0.1),
+                  border: Border.all(
+                      color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: _selectedImage != null
+                      ? Image.file(
+                    _selectedImage!,
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  )
+                      : Image.network(
+                    networkImageUrl,
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.person,
+                          size: 40, color: textColor?.withOpacity(0.7));
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              textColor ?? Colors.grey),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hi, $name!",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
+                    ),
+                    Text(email,
+                        style: TextStyle(
+                            color: textColor?.withOpacity(0.7), fontSize: 14)),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfileScreen(),
+                          ),
+                        );
+                        if (result != null && result is Map<String, String>) {
+                          setState(() {
+                            name = result['name']!;
+                            email = result['email']!;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF7AA3CC),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        "Edit Profile",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 40),
+
+          // Profile options
+          ProfileOption(
+            icon: Icons.history,
+            title: "Transaction History",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const TransactionHistoryScreen()),
+            ),
+            iconColor: const Color(0xff7AA3CC),
+          ),
+          ProfileOption(
+            icon: Icons.settings,
+            title: "Settings",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingScreen()),
+            ),
+            iconColor: const Color(0xff7AA3CC),
+          ),
+          ProfileOption(
+            icon: Icons.qr_code,
+            title: "My QR",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QrCodeScreen()),
+            ),
+            iconColor: const Color(0xff7AA3CC),
+          ),
+
+          // Logout option
+          Card(
+            color: isDark ? AppColors.darkBackground : Colors.white,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(
+                  color: isDark ? Colors.grey.shade500 : Colors.grey.shade300),
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                "Log Out",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500),
+              ),
+              onTap: _showLogoutBottomSheet,
+            ),
+          )
+        ],
+      ),
+    );
+
+    if (isDesktop) {
+      // Desktop layout with top container (notification)
+      return Scaffold(
+        backgroundColor: bgColor,
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              color: const Color(0xFF7AA3CC),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  const SizedBox(width: 48, height: 48),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_none,
+                        size: 28, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: SizedBox(width: 1000, child: mainContent),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Mobile layout
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
@@ -137,164 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface.withOpacity(0.1),
-                    border: Border.all(
-                        color: isDark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: _selectedImage != null
-                        ? Image.file(
-                      _selectedImage!,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    )
-                        : Image.network(
-                      networkImageUrl,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(Icons.person,
-                            size: 40,
-                            color: textColor?.withOpacity(0.7));
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                textColor ?? Colors.grey),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hi, $name!",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                      ),
-                      Text(email,
-                          style: TextStyle(
-                              color: textColor?.withOpacity(0.7),
-                              fontSize: 14)),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProfileScreen(),
-                            ),
-                          );
-
-                          if (result != null && result is Map<String, String>) {
-                            setState(() {
-                              name = result['name']!;
-                              email = result['email']!;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF7AA3CC),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-
-            // Profile options
-            ProfileOption(
-              icon: Icons.history,
-              title: "Transaction History",
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TransactionHistoryScreen()),
-              ),
-              iconColor: const Color(0xff7AA3CC),
-            ),
-            ProfileOption(
-              icon: Icons.settings,
-              title: "Settings",
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingScreen()),
-              ),
-              iconColor: const Color(0xff7AA3CC),
-            ),
-            ProfileOption(
-              icon: Icons.qr_code,
-              title: "My QR",
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const QrCodeScreen()),
-              ),
-              iconColor: const Color(0xff7AA3CC),
-            ),
-
-            // Logout option (dark/light mode ready)
-            Card(
-              color: isDark ? AppColors.darkBackground : Colors.white,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                    color: isDark ? Colors.grey.shade500 : Colors.grey.shade300),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: const Text(
-                  "Log Out",
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500),
-                ),
-                onTap: _showLogoutBottomSheet,
-              ),
-            )
-          ],
-        ),
+        child: mainContent,
       ),
     );
   }
@@ -306,6 +338,7 @@ class ProfileOption extends StatelessWidget {
   final VoidCallback onTap;
   final Color iconColor;
   final Widget? trailing;
+  final bool isDesktop;
 
   const ProfileOption({
     super.key,
@@ -314,16 +347,22 @@ class ProfileOption extends StatelessWidget {
     required this.onTap,
     required this.iconColor,
     this.trailing,
+    this.isDesktop = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
 
-    return Card(
+    final cardWidth = isDesktop ? 200.0 : double.infinity;
+    final fontSize = isDesktop ? 16.0 : 18.0;
+    final iconSize = isDesktop ? 20.0 : 24.0;
+    final arrowSize = isDesktop ? 14.0 : 16.0;
+
+    final card = Card(
       color: isDark ? AppColors.darkBackground : Colors.white,
       shadowColor: isDark ? Colors.transparent : Colors.grey.shade300,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -331,19 +370,26 @@ class ProfileOption extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        leading: Icon(icon, color: iconColor),
+        leading: Icon(icon, color: iconColor, size: iconSize),
         title: Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: fontSize,
             color: isDark ? Colors.white : Colors.black,
           ),
         ),
         trailing: trailing ??
             Icon(Icons.arrow_forward_ios,
-                size: 16, color: isDark ? Colors.white70 : Colors.black54),
+                size: arrowSize,
+                color: isDark ? Colors.white70 : Colors.black54),
         onTap: onTap,
       ),
     );
+
+    if (isDesktop) {
+      return Center(child: SizedBox(width: cardWidth, child: card));
+    }
+
+    return card;
   }
 }
