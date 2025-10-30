@@ -1,5 +1,6 @@
-import 'package:amin_pass/rewards/rewards_screen.dart';
+// home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:amin_pass/rewards/rewards_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(bool) onRewardButtonTap;
@@ -18,287 +19,276 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final mq = MediaQuery.of(context);
-    final sw = mq.size.width;
+    final sw = MediaQuery.of(context).size.width;
     const desktopBreakpoint = 900;
     final isDesktop = sw >= desktopBreakpoint;
 
-    // central max width for desktop/tablet
-    final contentMaxWidth = isDesktop ? 1050.0 : double.infinity;
-
-    return Scaffold(
-      backgroundColor: Colors.grey.shade800, // outer frame color like screenshot
-      body: SafeArea(
-        child: Row(
+    final profileWidget = Row(
+      children: [
+        CircleAvatar(
+          radius: 32,
+          backgroundColor: isDark ? Colors.grey.shade800 : Colors.blueGrey.shade100,
+          backgroundImage: const NetworkImage('https://picsum.photos/200'),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // left slim sidebar for desktop
-            // main area
-            Expanded(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: contentMaxWidth),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                    // central card that mimics screenshot frame
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: _buildInnerContent(context, isDark),
-                  ),
-                ),
+            Text(
+              'Hi, Jane!',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+            ),
+            Text(
+              "What's up",
+              style: TextStyle(
+                fontSize: 16,
+                color: theme.textTheme.bodyMedium?.color,
               ),
             ),
           ],
         ),
-      ),
+      ],
     );
-  }
 
-
-  Widget _buildInnerContent(BuildContext context, bool isDark) {
-    final theme = Theme.of(context);
-    // We'll create a top blue header band that visually matches the screenshot,
-    // and then content sections below it.
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Top blue header area (with rounded top corners)
-        Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFF8DAFE8), // bluish header
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(
+    final pointsCard = Container(
+      width: double.infinity,
+      height: 150, // fixed height
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF8DBAE9),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // avatar + greeting
-              CircleAvatar(
-                radius: 26,
-                backgroundColor: isDark ? Colors.grey.shade800 : Colors.blueGrey.shade100,
-                backgroundImage: const NetworkImage('https://picsum.photos/200'),
+              Row(
+                children: const [
+                  Icon(Icons.check_circle, color: Colors.green),
+                  SizedBox(width: 8),
+                  Text('Points', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                ],
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Hi, Jane!',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: theme.textTheme.bodyLarge?.color)),
-                    const SizedBox(height: 2),
-                    Text("What's up", style: TextStyle(color: theme.textTheme.bodyMedium?.color)),
-                  ],
+              const SizedBox(height: 6),
+              Text('$points', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 6),
+              SizedBox(
+                width: 180,
+                child: Text(
+                  'You need ${100 - 70} more points to get your next reward',
+                  style: TextStyle(fontSize: 12, color: isDark ? Colors.white70 : Colors.black),
                 ),
-              ),
-              // small bell icon on header right
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.notifications_none, size: 28, color: theme.iconTheme.color),
               ),
             ],
           ),
-        ),
-
-        // Main content area (white) overlapping slightly to create card feel
-        // We'll use negative margin by wrapping in a container and pushing it up using transform.
-        Transform.translate(
-          offset: const Offset(0, -12),
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
-            decoration: BoxDecoration(
-              color: theme.scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-            ),
-            child: Column(
+          const Spacer(),
+          SizedBox(
+            height: 72,
+            width: 72,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                // Points card (light blue rounded card) — placed over the white content
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF8DBAE9),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      // left texts
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: const [
-                              Icon(Icons.check_circle, color: Colors.green),
-                              SizedBox(width: 8),
-                              Text('Points', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black)),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text('$points', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black)),
-                          const SizedBox(height: 6),
-                          SizedBox(
-                            width: 180,
-                            child: Text('You need ${100 - 70} more points to get your next reward',
-                                style: TextStyle(fontSize: 12, color: isDark ? Colors.black : Colors.black)),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      // circular progress
-                      SizedBox(
-                        height: 72,
-                        width: 72,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              height: 72,
-                              width: 72,
-                              child: CircularProgressIndicator(
-                                value: percent,
-                                strokeWidth: 8,
-                                backgroundColor: Colors.white,
-                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-                              ),
-                            ),
-                            Text('${(percent * 100).toInt()}%',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black)),
-                          ],
-                        ),
-                      ),
-                    ],
+                SizedBox(
+                  height: 72,
+                  width: 72,
+                  child: CircularProgressIndicator(
+                    value: percent,
+                    strokeWidth: 8,
+                    backgroundColor: Colors.white,
+                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                   ),
                 ),
-
-                const SizedBox(height: 12),
-
-                // Buttons row
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          widget.onRewardButtonTap(true); // Earn Points
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: const Color(0xff7AA3CC),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          elevation: 0,
-                        ),
-                        child: Text('Earn Points', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.black : Colors.black)),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          widget.onRewardButtonTap(false); // View All Rewards
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
-                          side: BorderSide(color: isDark ? Colors.white24 : Colors.black12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
-                        child: Text('View All Rewards',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black)),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 18),
-
-                // Row with Upcoming Reward (left) and Recent Activity (right)
-                // On small screens this will stack vertically, on wide screens it's a Row
-                LayoutBuilder(builder: (context, constraints) {
-                  final isWide = constraints.maxWidth > 700;
-                  return isWide
-                      ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Left: Upcoming Reward
-                      Expanded(child: _upcomingRewardBlock(isDark, theme)),
-                      const SizedBox(width: 20),
-                      // Right: Recent Activity
-                      Expanded(child: _recentActivityBlock(isDark, theme)),
-                    ],
-                  )
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _upcomingRewardBlock(isDark, theme),
-                      const SizedBox(height: 14),
-                      _recentActivityBlock(isDark, theme),
-                    ],
-                  );
-                }),
-                const SizedBox(height: 30),
+                Text('${(percent * 100).toInt()}%',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: isDark ? Colors.white : Colors.black)),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
-  }
 
-  Widget _upcomingRewardBlock(bool isDark, ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Upcoming Reward', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
-        const SizedBox(height: 10),
-        Container(
-          height: 142,
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: isDark ? Colors.black12 : Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+    final buttonsRow = SizedBox(
+      height: 60, // fixed height
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                widget.onRewardButtonTap(true);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                backgroundColor: const Color(0xff7AA3CC),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                'Earn Points',
+                style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.black : Colors.black),
+              ),
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(width: 12),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                widget.onRewardButtonTap(false);
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
+                side: BorderSide(color: isDark ? Colors.white24 : Colors.black12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                'View All Rewards',
+                style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final upcomingReward = Container(
+      height: 160, // fixed height
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.grey.shade900 : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Business Name', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
+          const SizedBox(height: 6),
+          Text('Next Reward: Free Coffee', style: TextStyle(fontSize: 14, color: theme.textTheme.bodyMedium?.color)),
+          const SizedBox(height: 10),
+          Text('Just 10 points away!', style: TextStyle(fontSize: 12, color: isDark ? Colors.white70 : Colors.black87)),
+          const SizedBox(height: 10),
+          Row(
             children: [
-              Text('Business Name', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
-              const SizedBox(height: 6),
-              Text('Next Reward: Free Coffee', style: TextStyle(fontSize: 14, color: theme.textTheme.bodyMedium?.color)),
-              const SizedBox(height: 10),
-              Text('Just 10 points away!', style: TextStyle(fontSize: 12, color: isDark ? Colors.white70 : Colors.black87)),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(
-                        value: percent,
-                        minHeight: 16,
-                        backgroundColor: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-                        valueColor: const AlwaysStoppedAnimation(Color(0xff7AA3CC)),
-                      ),
-                    ),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: LinearProgressIndicator(
+                    value: percent,
+                    minHeight: 16,
+                    backgroundColor: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                    valueColor: const AlwaysStoppedAnimation(Color(0xff7AA3CC)),
                   ),
-                  const SizedBox(width: 10),
-                ],
-              )
+                ),
+              ),
+              const SizedBox(width: 10),
             ],
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     );
-  }
 
-  Widget _recentActivityBlock(bool isDark, ThemeData theme) {
-    return Column(
+    final recentActivity = Container(
+      height: 450, // fixed height
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Text('Recent Activity', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(), // disable scroll
+              children: [
+                ActivityItem(icon: Icons.add_circle, color: Colors.green, text: "5 Point earned at Cafe ABC", date: "12 Oct 2025", isDark: isDark),
+                ActivityItem(icon: Icons.card_giftcard, color: isDark ? Colors.white : Colors.black, text: "Reward 'Free Coffee' redeemed", date: "10 Oct 2025", isDark: isDark),
+                ActivityItem(icon: Icons.label, color: isDark ? Colors.white : Colors.black, text: "10 Points earned at store B", date: "09 Oct 2025", isDark: isDark),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final leftColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Recent Activity', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: theme.textTheme.bodyLarge?.color)),
-        const SizedBox(height: 8),
-        ActivityItem(icon: Icons.add_circle, color: Colors.green, text: "5 Point earned at Cafe ABC", date: "12 Oct 2025", isDark: isDark),
-        ActivityItem(icon: Icons.card_giftcard, color: isDark ? Colors.white : Colors.black, text: "Reward 'Free Coffee' redeemed", date: "10 Oct 2025", isDark: isDark),
-        ActivityItem(icon: Icons.label, color: isDark ? Colors.white : Colors.black, text: "10 Points earned at store B", date: "09 Oct 2025", isDark: isDark),
+        profileWidget,
+        const SizedBox(height: 16),
+        pointsCard,
+        const SizedBox(height: 12),
+        buttonsRow,
+        const SizedBox(height: 12),
+        upcomingReward,
       ],
+    );
+
+    final mainContent = SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: isDesktop
+            ? Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 2, child: leftColumn),
+            const SizedBox(width: 30),
+            Expanded(flex: 1, child: recentActivity),
+          ],
+        )
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            leftColumn,
+            const SizedBox(height: 16),
+            recentActivity,
+          ],
+        ),
+      ),
+    );
+
+    if (isDesktop) {
+      return Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              color: const Color(0xFF7AA3CC),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  const SizedBox(width: 48, height: 48),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.notifications_none, size: 28, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: mainContent),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SingleChildScrollView(child: mainContent),
     );
   }
 }
@@ -310,14 +300,7 @@ class ActivityItem extends StatelessWidget {
   final String date;
   final bool isDark;
 
-  const ActivityItem({
-    super.key,
-    required this.icon,
-    required this.color,
-    required this.text,
-    required this.date,
-    required this.isDark,
-  });
+  const ActivityItem({super.key, required this.icon, required this.color, required this.text, required this.date, required this.isDark});
 
   @override
   Widget build(BuildContext context) {

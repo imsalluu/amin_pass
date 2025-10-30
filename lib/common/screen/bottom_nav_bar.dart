@@ -120,7 +120,7 @@ class _BottomNavControllerState extends State<BottomNavController>
         body: Row(
           children: [
             _buildDesktopDrawer(isDark),
-            const SizedBox(width: 12),
+            const SizedBox(width: 0),
             Expanded(
               child: IndexedStack(
                 index: _currentIndex,
@@ -178,7 +178,7 @@ class _BottomNavControllerState extends State<BottomNavController>
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: _drawerExpanded ? expandedWidth : collapsedWidth,
-      margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+      margin: const EdgeInsets.only(left: 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Colors.transparent,
@@ -191,7 +191,7 @@ class _BottomNavControllerState extends State<BottomNavController>
             // Header with hamburger
             AppContainer(
               height: 80,
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
               color: const Color(0xFF7AA3CC),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -214,9 +214,17 @@ class _BottomNavControllerState extends State<BottomNavController>
               child: Center(
                 child: Container(
                   width: double.infinity,
+                  margin: EdgeInsets.only(right: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.10),
+                        blurRadius: 8,
+                        offset: const Offset(2, 0), // right side shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +232,7 @@ class _BottomNavControllerState extends State<BottomNavController>
                       const SizedBox(height: 16),
                       _desktopMenuTile(icon: Icons.home_outlined, label: 'Home', index: 0, active: _currentIndex == 0, onTap: () => _setIndex(0), expanded: _drawerExpanded, activeColor: activeColor),
                       _desktopMenuTile(icon: Icons.card_giftcard_outlined, label: 'Rewards', index: 1, active: _currentIndex == 1, onTap: () => _setIndex(1), expanded: _drawerExpanded, activeColor: activeColor),
-                      _desktopMenuTile(icon: Icons.credit_card_outlined, label: 'Earnings', index: 2, active: _currentIndex == 2, onTap: () => _setIndex(2), expanded: _drawerExpanded, activeColor: activeColor),
+                      _desktopMenuTile(icon: Icons.credit_card_outlined, label: 'Cards', index: 2, active: _currentIndex == 2, onTap: () => _setIndex(2), expanded: _drawerExpanded, activeColor: activeColor),
                       _desktopMenuTile(icon: Icons.person_outline, label: 'Profile', index: 3, active: _currentIndex == 3, onTap: () => _setIndex(3), expanded: _drawerExpanded, activeColor: activeColor),
                       const Spacer(),
                     ],
