@@ -1,3 +1,4 @@
+import 'package:amin_pass/home/screen/notification_screen.dart';
 import 'package:flutter/material.dart';
 
 class RewardRedeemModal extends StatefulWidget {
@@ -135,7 +136,14 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationScreen(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.notifications_none,
                           size: 28, color: Colors.black),
                     ),
@@ -166,7 +174,7 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
           style: TextStyle(
               color: isDark ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 18),
         ),
       ),
       body: mainContent,

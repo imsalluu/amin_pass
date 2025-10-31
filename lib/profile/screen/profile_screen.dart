@@ -1,4 +1,5 @@
 import 'package:amin_pass/auth/screen/login_screen.dart';
+import 'package:amin_pass/home/screen/notification_screen.dart';
 import 'package:amin_pass/profile/screen/edit_profile_screen.dart';
 import 'package:amin_pass/profile/screen/my_qr_code.dart';
 import 'package:amin_pass/profile/screen/transaction_history.dart';
@@ -296,7 +297,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(width: 48, height: 48),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NotificationScreen(),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.notifications_none,
                         size: 28, color: Colors.black),
                   ),

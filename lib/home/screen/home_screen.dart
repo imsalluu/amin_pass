@@ -1,8 +1,9 @@
+import 'package:amin_pass/home/screen/notification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:amin_pass/rewards/rewards_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(bool) onRewardButtonTap;
+
   const HomeScreen({super.key, required this.onRewardButtonTap});
 
   @override
@@ -22,7 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
     const desktopBreakpoint = 900;
     final isDesktop = sw >= desktopBreakpoint;
 
+    // 👇 profile section (mobile shows notification icon beside "Hi, Jane!")
     final profileWidget = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
           radius: 32,
@@ -31,25 +34,50 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundImage: const NetworkImage('https://picsum.photos/200'),
         ),
         const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hi, Jane!',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: theme.textTheme.bodyLarge?.color,
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hi, Jane!',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: theme.textTheme.bodyLarge?.color,
+                    ),
+                  ),
+                  Text(
+                    "What's up",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Text(
-              "What's up",
-              style: TextStyle(
-                fontSize: 16,
-                color: theme.textTheme.bodyMedium?.color,
-              ),
-            ),
-          ],
+              if (!isDesktop) ...[
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationScreen(),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.notifications_none,
+                    size: 28,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ],
     );
@@ -72,23 +100,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: const [
                   Icon(Icons.check_circle, color: Colors.green),
                   SizedBox(width: 8),
-                  Text('Points',
-                      style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                  Text(
+                    'Points',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 6),
-              Text('$points',
-                  style: const TextStyle(
-                      fontSize: 28, fontWeight: FontWeight.bold)),
+              Text(
+                '$points',
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
               const SizedBox(height: 6),
               SizedBox(
                 width: 180,
                 child: Text(
                   'You need ${100 - 70} more points to get your next reward',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: isDark ? Colors.white70 : Colors.black),
+                  style: TextStyle(fontSize: 12, color: Colors.black),
                 ),
               ),
             ],
@@ -107,16 +143,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     value: percent,
                     strokeWidth: 8,
                     backgroundColor: Colors.white,
-                    valueColor:
-                    const AlwaysStoppedAnimation<Color>(Colors.blue),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Colors.blue,
+                    ),
                   ),
                 ),
                 Text(
                   '${(percent * 100).toInt()}%',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -145,7 +182,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: const Text(
                 'Earn Points',
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -159,7 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
                 side: BorderSide(
-                    color: isDark ? Colors.white24 : Colors.black12),
+                  color: isDark ? Colors.white24 : Colors.black12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -167,8 +208,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'View All Rewards',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black),
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
               ),
             ),
           ),
@@ -183,26 +225,37 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: isDark ? Colors.grey.shade900 : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border:
-        Border.all(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Business Name',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: theme.textTheme.bodyLarge?.color)),
+          Text(
+            'Business Name',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: theme.textTheme.bodyLarge?.color,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text('Next Reward: Free Coffee',
-              style: TextStyle(
-                  fontSize: 14, color: theme.textTheme.bodyMedium?.color)),
+          Text(
+            'Next Reward: Free Coffee',
+            style: TextStyle(
+              fontSize: 14,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
+          ),
           const SizedBox(height: 10),
-          Text('Just 10 points away!',
-              style: TextStyle(
-                  fontSize: 12,
-                  color: isDark ? Colors.white70 : Colors.black87)),
+          Text(
+            'Just 10 points away!',
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? Colors.white70 : Colors.black87,
+            ),
+          ),
           const SizedBox(height: 10),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -221,42 +274,44 @@ class _HomeScreenState extends State<HomeScreen> {
     final recentActivity = Container(
       width: double.infinity,
       padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Recent Activity',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 8),
+          Text(
+            'Recent Activity',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 8),
           ActivityItem(
-              icon: Icons.add_circle,
-              color: Colors.green,
-              text: "5 Point earned at Cafe ABC",
-              date: "12 Oct 2025",
-              isDark: isDark),
+            icon: Icons.add_circle,
+            text: "5 Point earned at Cafe ABC",
+            date: "12 Oct 2025",
+          ),
           ActivityItem(
-              icon: Icons.card_giftcard,
-              color: isDark ? Colors.white : Colors.black,
-              text: "Reward 'Free Coffee' redeemed",
-              date: "10 Oct 2025",
-              isDark: isDark),
+            icon: Icons.card_giftcard,
+            text: "Reward 'Free Coffee' redeemed",
+            date: "10 Oct 2025",
+          ),
           ActivityItem(
-              icon: Icons.label,
-              color: isDark ? Colors.white : Colors.black,
-              text: "10 Points earned at store B",
-              date: "09 Oct 2025",
-              isDark: isDark),
+            icon: Icons.label,
+            text: "10 Points earned at store B",
+            date: "09 Oct 2025",
+          ),
           ActivityItem(
-              icon: Icons.add_circle,
-              color: Colors.green,
-              text: "5 Point earned at Cafe ABC",
-              date: "12 Oct 2025",
-              isDark: isDark),
+            icon: Icons.add_circle,
+            text: "5 Point earned at Cafe ABC",
+            date: "12 Oct 2025",
+          ),
           ActivityItem(
-              icon: Icons.label,
-              color: isDark ? Colors.white : Colors.black,
-              text: "10 Points earned at store B",
-              date: "09 Oct 2025",
-              isDark: isDark),
+            icon: Icons.card_giftcard,
+            text: "Reward 'Free Coffee' redeemed",
+            date: "10 Oct 2025",
+          ),
+          ActivityItem(
+            icon: Icons.label,
+            text: "10 Points earned at store B",
+            date: "09 Oct 2025",
+          ),
         ],
       ),
     );
@@ -281,14 +336,12 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    leftColumn,
-                    upcomingReward,
-                  ],
-                )),
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [leftColumn, upcomingReward],
+              ),
+            ),
             const SizedBox(width: 30),
             Expanded(flex: 1, child: recentActivity),
           ],
@@ -297,15 +350,9 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             leftColumn,
-            // scrollable business + activity section
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    upcomingReward,
-                    recentActivity,
-                  ],
-                ),
+                child: Column(children: [upcomingReward, recentActivity]),
               ),
             ),
           ],
@@ -328,9 +375,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 48, height: 48),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_none,
-                        size: 28, color: Colors.black),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      size: 28,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -341,56 +398,65 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // MOBILE
+    // 📱 Mobile layout
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          Expanded(child: mainContent),
-        ],
-      ),
+      body: Column(children: [Expanded(child: mainContent)]),
     );
   }
 }
 
+// 🔹 ActivityItem with full dark/light mode support (icon + text + date)
 class ActivityItem extends StatelessWidget {
   final IconData icon;
-  final Color color;
   final String text;
   final String date;
-  final bool isDark;
 
   const ActivityItem({
     super.key,
     required this.icon,
-    required this.color,
     required this.text,
     required this.date,
-    required this.isDark,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    // Dynamic icon color based on theme and type of icon
+    Color getIconColor() {
+      if (icon == Icons.add_circle) return isDark ? Colors.green.shade500 : Colors.green.shade500;
+      if (icon == Icons.card_giftcard) return isDark ? Colors.white : Colors.black;
+      return isDark ? Colors.white : Colors.black;
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(icon, color: color, size: 22),
+          Icon(icon, color: getIconColor(), size: 22),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(text,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: isDark ? Colors.white : Colors.black)),
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(date,
-                    style: TextStyle(
-                        color: isDark ? Colors.white70 : Colors.black,
-                        fontSize: 12)),
+                Text(
+                  date,
+                  style: TextStyle(
+                    color: isDark ? Colors.white70 : Colors.black87,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),

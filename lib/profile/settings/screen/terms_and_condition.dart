@@ -11,7 +11,11 @@ class TermsAndCondition extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 6),
-          child: Icon(Icons.circle, size: 6, color: textColor?.withOpacity(0.7)),
+          child: Icon(
+            Icons.circle,
+            size: 6,
+            color: textColor?.withOpacity(0.7),
+          ),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -57,11 +61,20 @@ class TermsAndCondition extends StatelessWidget {
             style: TextStyle(fontSize: 14, height: 1.45, color: textColor),
           ),
           _header(context, 'User Eligibility'),
-          _bullet(context, 'Users must be at least 13 years old to use Loyalty. Users under 18 require parental consent.'),
+          _bullet(
+            context,
+            'Users must be at least 13 years old to use Loyalty. Users under 18 require parental consent.',
+          ),
           _header(context, 'Account Creation'),
-          _bullet(context, 'You are responsible for accurate information during account creation. Do not share login credentials.'),
+          _bullet(
+            context,
+            'You are responsible for accurate information during account creation. Do not share login credentials.',
+          ),
           _header(context, 'Data Security'),
-          _bullet(context, 'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
+          _bullet(
+            context,
+            'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.',
+          ),
         ],
       ),
     );
@@ -93,7 +106,10 @@ class TermsAndCondition extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ],
@@ -127,7 +143,11 @@ class TermsAndCondition extends StatelessWidget {
         ),
         title: Text(
           'Terms & Condition',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textColor,
+          ),
         ),
         centerTitle: true,
       ),

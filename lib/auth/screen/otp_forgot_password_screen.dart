@@ -24,110 +24,108 @@ class _OtpForgotPasswordScreenState extends State<OtpForgotPasswordScreen> {
     final size = MediaQuery.of(context).size;
     final isWeb = kIsWeb || size.width >= 1024;
 
+    Widget content = Container(
+      width: isWeb ? 400 : double.infinity,
+      margin: isWeb ? const EdgeInsets.symmetric(vertical: 40) : EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+      decoration: isWeb
+          ? BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.shade400,
+          width: 2,
+        ),
+      )
+          : null,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: isWeb ? 40 : 120), // Mobile এ ফাঁকা কমানো
+            Text(
+              'Please Check your email',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              'We’ve sent a code to example@gmail.com',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: secondaryTextColor,
+              ),
+            ),
+            const SizedBox(height: 40),
+            PinCodeTextField(
+              controller: _otpTEController,
+              length: 4,
+              obscureText: false,
+              animationType: AnimationType.fade,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              keyboardType: TextInputType.number,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                fieldWidth: 50,
+                fieldHeight: 50,
+                activeFillColor: backgroundColor,
+                selectedColor: const Color(0xFF7AA3CC),
+                inactiveColor: Colors.grey,
+                inactiveFillColor: backgroundColor,
+                selectedFillColor: Colors.transparent,
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              appContext: context,
+              validator: (String? value) {
+                if (value == null || value.length < 4) {
+                  return 'Enter your OTP';
+                }
+                return null;
+              },
+              textStyle: TextStyle(color: textColor),
+            ),
+            const SizedBox(height: 40),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF7AA3CC),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text(
+                  'Send Code',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Center(
-          child: Container(
-            width: isWeb ? 400 : double.infinity,
-            margin: isWeb ? const EdgeInsets.symmetric(vertical: 40) : EdgeInsets.zero,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-            decoration: isWeb
-                ? BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.grey.shade400,
-                width: 2,
-              ),
-            )
-                : null,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 120),
-
-                  Text(
-                    'Please Check your email',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Text(
-                    'We’ve sent a code to example@gmail.com',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: secondaryTextColor,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-
-                  PinCodeTextField(
-                    controller: _otpTEController,
-                    length: 4,
-                    obscureText: false,
-                    animationType: AnimationType.fade,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    keyboardType: TextInputType.number,
-                    pinTheme: PinTheme(
-                      shape: PinCodeFieldShape.box,
-                      fieldWidth: 50,
-                      fieldHeight: 50,
-                      activeFillColor: backgroundColor,
-                      selectedColor: const Color(0xFF7AA3CC),
-                      inactiveColor: Colors.grey,
-                      inactiveFillColor: backgroundColor,
-                      selectedFillColor: Colors.transparent,
-                    ),
-                    animationDuration: const Duration(milliseconds: 300),
-                    appContext: context,
-                    validator: (String? value) {
-                      if (value == null || value.length < 4) {
-                        return 'Enter your OTP';
-                      }
-                      return null;
-                    },
-                    textStyle: TextStyle(color: textColor),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7AA3CC),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text(
-                        'Send Code',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        child: isWeb
+            ? Center(child: content) // Web: Centered
+            : content,               // Mobile: Not centered
       ),
     );
   }

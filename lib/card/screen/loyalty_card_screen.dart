@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class LoyaltyCardScreen extends StatelessWidget {
   const LoyaltyCardScreen({super.key});
@@ -7,276 +8,141 @@ class LoyaltyCardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+
     final sw = MediaQuery.of(context).size.width;
-    final isDesktop = sw >= 900;
+    const desktopBreakpoint = 900;
+    final isDesktop = sw >= desktopBreakpoint;
 
-    final content = Padding(
-      padding: const EdgeInsets.all(4),
+    // 🔹 Main content (Loyalty Card)
+    final cardContent = Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 40),
+      decoration: BoxDecoration(
+        color: const Color(0xFF7AA3CC),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 18),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Coffee Shop Card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF6A4C93), Color(0xFF1982C4)],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Coffee Shop",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+          // 🔹 Top Row (Shop info + points)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 14,
+                    backgroundImage: NetworkImage(
+                      'https://cdn-icons-png.flaticon.com/512/1046/1046784.png',
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Points",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "250",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                color: Colors.black26,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Coffee Shop",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      color: Colors.black,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Text(
-                          "Loyalty",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.white.withOpacity(0.5)),
-                          ),
-                          child: const Text(
-                            "Gold Member",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+              const Text(
+                "Points 250",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.black,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 32),
 
-          // Reward Section
-          const Text(
-            "Reward Name",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+          const SizedBox(height: 10),
+
+          // 🔹 Network Image (Safe)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              'https://img.freepik.com/free-vector/loyalty-program-illustration_335657-3389.jpg',
+              height: 100,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                height: 100,
+                color: Colors.grey.shade200,
+                alignment: Alignment.center,
+                child: const Icon(Icons.image_not_supported, size: 30),
+              ),
             ),
           ),
+
+          const SizedBox(height: 10),
+
+          // 🔹 Reward Name + Status
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                "Reward Name",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                "Status",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+
           const SizedBox(height: 16),
 
-          // Reward Card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Status",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        "Active",
-                        style: TextStyle(
-                          color: Colors.green.shade800,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Free Coffee after 10 purchases",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "5/10 purchases completed",
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  height: 8,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 8,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF6A4C93), Color(0xFF1982C4)],
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Additional Info
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.blue, size: 20),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    "Collect more points to unlock premium rewards",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          // 🔹 QR Code (centered)
+          QrImageView(
+            data: "https://example.com/qrcode",
+            version: QrVersions.auto,
+            size: 110,
+            backgroundColor: Colors.white,
           ),
         ],
       ),
     );
 
+    // 💻 Desktop/Web Layout
     if (isDesktop) {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor:
+        isDark ? theme.colorScheme.background : const Color(0xFFF5F7FA),
         body: Column(
           children: [
+            // 🔸 Top Blue Header
             Container(
               height: 80,
               width: double.infinity,
               color: const Color(0xFF7AA3CC),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Loyalty Card',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                    ),
-                  ),
-                ],
+              alignment: Alignment.center,
+              child: const Text(
+                "Loyalty Card",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
+
+            // 🔸 Centered card (no background container)
             Expanded(
-              child: SizedBox(
-                width: 600,
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 80),
-                    child: content,
-                  ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: cardContent,
                 ),
               ),
             ),
@@ -285,30 +151,27 @@ class LoyaltyCardScreen extends StatelessWidget {
       );
     }
 
-    // Mobile layout
+    // 📱 Mobile Layout (unchanged)
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? theme.colorScheme.background : Colors.white,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Loyalty Card",
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
+            color: isDark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios, color: theme.iconTheme.color),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: content,
-      ),
+      body: cardContent,
     );
   }
 }

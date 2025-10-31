@@ -11,7 +11,11 @@ class PrivacySafetyScreen extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 6),
-          child: Icon(Icons.circle, size: 6, color: textColor?.withOpacity(0.7)),
+          child: Icon(
+            Icons.circle,
+            size: 6,
+            color: textColor?.withOpacity(0.7),
+          ),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -57,11 +61,20 @@ class PrivacySafetyScreen extends StatelessWidget {
             style: TextStyle(fontSize: 14, height: 1.45, color: textColor),
           ),
           _header(context, 'Information We Collect'),
-          _bullet(context, 'We collect basic user information such as name, email, and location for account creation and personalized service.'),
+          _bullet(
+            context,
+            'We collect basic user information such as name, email, and location for account creation and personalized service.',
+          ),
           _header(context, 'How We Use Your Information'),
-          _bullet(context, 'Your information is used to provide personalized rewards, improve our services, and send relevant notifications. We do not sell your data.'),
+          _bullet(
+            context,
+            'Your information is used to provide personalized rewards, improve our services, and send relevant notifications. We do not sell your data.',
+          ),
           _header(context, 'Data Security'),
-          _bullet(context, 'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.'),
+          _bullet(
+            context,
+            'We use industry-standard security measures to protect your data. However, please be aware that no online platform is entirely secure.',
+          ),
         ],
       ),
     );
@@ -93,7 +106,10 @@ class PrivacySafetyScreen extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ],
@@ -127,7 +143,11 @@ class PrivacySafetyScreen extends StatelessWidget {
         ),
         title: Text(
           'Privacy & Safety',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textColor,
+          ),
         ),
         centerTitle: true,
       ),
