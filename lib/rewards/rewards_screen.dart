@@ -166,7 +166,7 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
           style: TextStyle(
               color: isDark ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 18),
         ),
       ),
       body: mainContent,

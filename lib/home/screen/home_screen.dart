@@ -74,13 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 8),
                   Text('Points',
                       style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600,color: Colors.black)),
                 ],
               ),
               const SizedBox(height: 6),
               Text('$points',
                   style: const TextStyle(
-                      fontSize: 28, fontWeight: FontWeight.bold)),
+                      fontSize: 28, fontWeight: FontWeight.bold,color: Colors.black)),
               const SizedBox(height: 6),
               SizedBox(
                 width: 180,
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'You need ${100 - 70} more points to get your next reward',
                   style: TextStyle(
                       fontSize: 12,
-                      color: isDark ? Colors.white70 : Colors.black),
+                      color: Colors.black),
                 ),
               ),
             ],
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: Colors.black,
                   ),
                 ),
               ],

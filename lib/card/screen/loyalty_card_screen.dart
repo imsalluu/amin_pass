@@ -259,13 +259,6 @@ class LoyaltyCardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -293,14 +286,15 @@ class LoyaltyCardScreen extends StatelessWidget {
           "Loyalty Card",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios_new,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,

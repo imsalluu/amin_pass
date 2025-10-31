@@ -176,10 +176,9 @@ class QrCodeScreen extends StatelessWidget {
         title: Text(
           "Scan QR Code",
           style: TextStyle(
-            color: theme.textTheme.bodyLarge?.color,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+              color: isDark ? Colors.white : Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,

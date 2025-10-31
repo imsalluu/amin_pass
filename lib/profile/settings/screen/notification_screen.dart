@@ -209,13 +209,12 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: const Text(
+                    child: Text(
                       'Notifications',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                          color: isDark ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
                     ),
                   ),
                   Align(

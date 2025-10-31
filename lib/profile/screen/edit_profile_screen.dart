@@ -199,10 +199,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: Text(
           "Edit Profile",
           style: TextStyle(
-            color: theme.textTheme.bodyLarge?.color,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+              color: isDark ? Colors.white : Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,

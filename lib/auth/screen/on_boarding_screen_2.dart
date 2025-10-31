@@ -9,87 +9,103 @@ class OnboardingScreenTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     // Detect current theme
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final sw = MediaQuery.of(context).size.width;
+    final isDesktop = sw >= 900;
+
+    // Desktop size adjustments
+    final logoWidth = isDesktop ? 200.0 : 138.0;
+    final logoHeight = isDesktop ? 180.0 : 120.0;
+    final qrHeight = isDesktop ? 350.0 : 274.0;
+    final descFontSize = isDesktop ? 20.0 : 16.0;
+    final spacing1 = isDesktop ? 80.0 : 60.0;
+    final spacing2 = isDesktop ? 24.0 : 16.0;
+    final spacing3 = isDesktop ? 60.0 : 40.0;
+    final buttonWidth = isDesktop ? 200.0 : 152.0;
+    final buttonHeight = isDesktop ? 50.0 : 39.0;
+    final buttonFontSize = isDesktop ? 18.0 : 16.0;
 
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Logo Section
-              SizedBox(
-                width: 138,
-                height: 120,
-                child: SvgPicture.asset(
-                  isDarkMode
-                      ? 'assets/images/logo_dark.svg' // Dark mode logo
-                      : 'assets/images/aminpass_logo.svg',      // Light mode logo
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: isDesktop ? 100 : 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Logo Section
+                SizedBox(
+                  width: logoWidth,
+                  height: logoHeight,
+                  child: SvgPicture.asset(
+                    isDarkMode
+                        ? 'assets/images/logo_dark.svg'
+                        : 'assets/images/aminpass_logo.svg',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
+                SizedBox(height: spacing1),
+
+                // QR Illustration Section
+                Image.asset(
+                  'assets/images/on_boarding_two.png',
+                  height: qrHeight,
                   fit: BoxFit.contain,
                 ),
-              ),
 
-              const SizedBox(height: 60),
+                SizedBox(height: spacing2),
 
-              // QR Illustration Section
-              Image.asset(
-                'assets/images/on_boarding_two.png',
-                height: 274,
-                fit: BoxFit.contain,
-              ),
-
-              const SizedBox(height: 16),
-
-              // Description Text
-              Text(
-                "Sign up or log in instantly using your mobile\n number or email address.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                // Description Text
+                Text(
+                  "Sign up or log in instantly using your mobile\n number or email address.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: descFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 40),
+                SizedBox(height: spacing3),
 
-              // Button aligned to the right
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 152,
-                    height: 39,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7AA3CC),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingScreenThree(),
+                // Button aligned to the right
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: buttonWidth,
+                      height: buttonHeight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF7AA3CC),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                        );
-                      },
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
+                        ),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OnboardingScreenThree(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                            fontSize: buttonFontSize,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

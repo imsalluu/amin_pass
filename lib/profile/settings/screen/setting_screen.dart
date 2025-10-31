@@ -162,10 +162,9 @@ class _SettingScreenState extends State<SettingScreen> {
         title: Text(
           'Settings',
           style: TextStyle(
-            color: isDark ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+              color: isDark ? Colors.white : Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
         ),
       ),
       body: SingleChildScrollView(child: content),
@@ -195,10 +194,10 @@ class ProfileOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
 
-    final cardWidth = isDesktop ? 200.0 : double.infinity;
-    final fontSize = isDesktop ? 16.0 : 18.0;
-    final iconSize = isDesktop ? 20.0 : 24.0;
-    final arrowSize = isDesktop ? 14.0 : 16.0;
+    final cardWidth = isDesktop ? 800.0 : double.infinity;
+    final fontSize = isDesktop ? 18.0 : 18.0;
+    final iconSize = isDesktop ? 26.0 : 24.0;
+    final arrowSize = isDesktop ? 18.0 : 16.0;
 
     final card = Card(
       color: isDark ? AppColors.darkBackground : Colors.white,
