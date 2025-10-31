@@ -56,7 +56,7 @@ class TransactionHistoryScreen extends StatelessWidget {
     Widget buildCard(Map<String, dynamic> tx) {
       return Container(
         height: 115,
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
         decoration: BoxDecoration(
           color: isDark ? Colors.black12 : Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -73,7 +73,7 @@ class TransactionHistoryScreen extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -92,7 +92,7 @@ class TransactionHistoryScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   // Title & subtitle
                   Expanded(
                     child: Column(
@@ -115,6 +115,7 @@ class TransactionHistoryScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 10), // ✅ added spacing between text and date
                   // Date
                   Text(
                     tx["date"],
@@ -126,7 +127,7 @@ class TransactionHistoryScreen extends StatelessWidget {
                 ],
               ),
               if (tx["id"].isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   "Transaction ID: ${tx["id"]}",
                   style: const TextStyle(color: Color(0xFFE53935), fontSize: 12),
@@ -145,7 +146,7 @@ class TransactionHistoryScreen extends StatelessWidget {
       );
     }
 
-    // Desktop layout: 2 columns grid
+    // Desktop layout
     if (isDesktop) {
       return Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
@@ -180,11 +181,11 @@ class TransactionHistoryScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 800,
                   child: GridView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
                       childAspectRatio: 2.2,
                     ),
                     itemCount: transactions.length,
@@ -198,7 +199,7 @@ class TransactionHistoryScreen extends StatelessWidget {
       );
     }
 
-    // Mobile layout: single column list
+    // Mobile layout
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
@@ -211,9 +212,10 @@ class TransactionHistoryScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+      body: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         itemCount: transactions.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 8), // ✅ spacing between items
         itemBuilder: (context, index) => buildCard(transactions[index]),
       ),
     );

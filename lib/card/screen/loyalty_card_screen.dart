@@ -11,7 +11,7 @@ class LoyaltyCardScreen extends StatelessWidget {
     final isDesktop = sw >= 900;
 
     final content = Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

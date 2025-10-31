@@ -123,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final isDesktop = sw >= 900;
 
     final mainContent = Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

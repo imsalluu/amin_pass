@@ -18,13 +18,15 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'title': 'Midnight Mocha',
       'desc': 'A rich and indulgent blend of dark chocolate and bold espresso.',
       'points': 30,
-      'imageUrl': 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
+      'imageUrl':
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
     },
     {
       'title': 'Cappuccino Bliss',
       'desc': 'Smooth, creamy, and full of flavor. Earn while you sip!',
       'points': 40,
-      'imageUrl': 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600',
+      'imageUrl':
+      'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600',
     },
   ];
 
@@ -34,7 +36,8 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'desc': 'Redeem for 100 points',
       'expire': '30 Nov 2025',
       'points': 100,
-      'imageUrl': 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
+      'imageUrl':
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600',
       'claimed': false,
     },
     {
@@ -42,7 +45,8 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
       'desc': 'Redeem for 120 points',
       'expire': '30 Nov 2025',
       'points': 120,
-      'imageUrl': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
+      'imageUrl':
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
       'claimed': false,
     },
   ];
@@ -97,14 +101,15 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
               rewards: rewards,
               isDark: isDark,
               isDesktop: isDesktop,
-              onClaim: (points) => setState(() => userPoints -= points),
+              onClaim: (points) =>
+                  setState(() => userPoints -= points),
             ),
           ),
         ],
       ),
     );
 
-    // Desktop layout with top container
+    // Desktop layout
     if (isDesktop) {
       return Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
@@ -117,10 +122,10 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Stack(
                 children: [
-                  Center(
+                  const Center(
                     child: Text(
                       'Reward Redeem',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -143,7 +148,6 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
         ),
       );
     }
-
 
     // Mobile layout
     return Scaffold(
@@ -189,7 +193,9 @@ class _RewardRedeemModalState extends State<RewardRedeemModal> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: active ? Colors.black : (isDark ? Colors.white : Colors.black87),
+              color: active
+                  ? Colors.black
+                  : (isDark ? Colors.white : Colors.black87),
             ),
           ),
         ),
@@ -224,14 +230,14 @@ class EarnPointsTab extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
-            childAspectRatio: 2.2,
+            childAspectRatio: isDesktop ? 2.2 : 2.0,
           ),
           itemCount: earnPoints.length,
           itemBuilder: (context, index) {
             final item = earnPoints[index];
             return Container(
-              width: 460,
-              height: 160,
+              width: double.infinity,
+              height: 160, // ✅ Fixed height for mobile
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isDark ? Colors.black12 : Colors.white,
@@ -269,6 +275,8 @@ class EarnPointsTab extends StatelessWidget {
                                           : Colors.black)),
                               const SizedBox(height: 4),
                               Text(item['desc'] ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: isDark
@@ -299,7 +307,7 @@ class EarnPointsTab extends StatelessWidget {
   }
 }
 
-// ------------------- View All Rewards Tab -------------------
+/// ------------------- View All Rewards Tab -------------------
 class ViewAllRewardsTab extends StatefulWidget {
   final int userPoints;
   final List<Map<String, dynamic>> rewards;
@@ -367,14 +375,14 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
-                  childAspectRatio: 2.2,
+                  childAspectRatio: isDesktop ? 2.2 : 2.0, // ✅ compact ratio
                 ),
                 itemCount: widget.rewards.length,
                 itemBuilder: (context, index) {
                   final item = widget.rewards[index];
                   return Container(
-                    width: 460,
-                    height: 170,
+                    width: double.infinity,
+                    height: 120, // ✅ smaller height for mobile
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isDark ? Colors.black12 : Colors.white,
@@ -383,44 +391,50 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // ✅ remove extra gap
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start, // vertical center
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.network(
                                 item['imageUrl'] ?? '',
-                                width: 120,
-                                height: 120,
+                                width: isDesktop ? 120 : 120,
+                                height: isDesktop ? 120 : 120,
                                 fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center, // center vertically
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(item['title'] ?? '',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17,
+                                          fontSize: 16,
                                           color: isDark
                                               ? Colors.white
                                               : Colors.black)),
                                   const SizedBox(height: 4),
-                                  Text(item['desc'] ?? '',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: isDark
-                                              ? Colors.white70
-                                              : Colors.black)),
+                                  Text(
+                                    item['desc'] ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: isDark
+                                            ? Colors.white70
+                                            : Colors.black87),
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -438,7 +452,8 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                                   widget.onClaim(item['points']);
                                   setState(() => item['claimed'] = true);
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
                                     const SnackBar(
                                       content: Text('Not enough points!'),
                                       backgroundColor: Colors.redAccent,
@@ -447,8 +462,8 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                                 }
                               },
                               child: Container(
-                                width: 100,
-                                height: 40,
+                                width: isDesktop ? 100 : 90,
+                                height: 38,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: item['claimed'] == true
@@ -457,10 +472,12 @@ class _ViewAllRewardsTabState extends State<ViewAllRewardsTab> {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
-                                  item['claimed'] == true ? 'Claimed' : 'Claim',
+                                  item['claimed'] == true
+                                      ? 'Claimed'
+                                      : 'Claim',
                                   style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 15,
+                                      fontSize: 14.5,
                                       fontWeight: FontWeight.w500),
                                 ),
                               ),

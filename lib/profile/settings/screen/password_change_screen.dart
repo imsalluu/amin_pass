@@ -30,7 +30,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
     final iconColor = isDark ? Colors.white70 : Colors.black54;
 
     final formContent = Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -48,7 +48,7 @@ class PrivacySafetyScreen extends StatelessWidget {
     final isDesktop = sw >= 900;
 
     final content = Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -195,14 +195,15 @@ class ProfileOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
 
-    final fontSize = isDesktop ? 14.0 : 18.0;
+    final cardWidth = isDesktop ? 200.0 : double.infinity;
+    final fontSize = isDesktop ? 16.0 : 18.0;
     final iconSize = isDesktop ? 20.0 : 24.0;
-    final paddingV = isDesktop ? 8.0 : 16.0;
+    final arrowSize = isDesktop ? 14.0 : 16.0;
 
     final card = Card(
       color: isDark ? AppColors.darkBackground : Colors.white,
       shadowColor: isDark ? Colors.transparent : Colors.grey.shade300,
-      margin: EdgeInsets.symmetric(vertical: isDesktop ? 4 : 8), // smaller vertical margin
+      margin: const EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -210,19 +211,25 @@ class ProfileOption extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: isDesktop ? 6 : 16), // smaller vertical padding
-        leading: Icon(icon, color: iconColor, size: isDesktop ? 20 : 24),
+        leading: Icon(icon, color: iconColor, size: iconSize),
         title: Text(
           title,
-          style: TextStyle(fontSize: isDesktop ? 14 : 18, color: isDark ? Colors.white : Colors.black),
+          style: TextStyle(
+            fontSize: fontSize,
+            color: isDark ? Colors.white : Colors.black,
+          ),
         ),
-        trailing: trailing ?? Icon(Icons.arrow_forward_ios, size: 16, color: isDark ? Colors.white70 : Colors.black54),
+        trailing: trailing ??
+            Icon(Icons.arrow_forward_ios,
+                size: arrowSize,
+                color: isDark ? Colors.white70 : Colors.black54),
         onTap: onTap,
       ),
     );
 
-
-    if (isDesktop) return Center(child: SizedBox(width: 600, child: card));
+    if (isDesktop) {
+      return Center(child: SizedBox(width: cardWidth, child: card));
+    }
 
     return card;
   }

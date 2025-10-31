@@ -104,7 +104,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
 
     final content = Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           // Master notification
