@@ -1,5 +1,4 @@
-import 'package:amin_pass/auth/screen/login_screen.dart';
-import 'package:amin_pass/auth/screen/splash_screen.dart';
+import 'package:amin_pass/onBoarding/splash_screen.dart';
 import 'package:amin_pass/theme/theme_data.dart';
 import 'package:amin_pass/theme/theme_provider.dart';
 import 'package:flutter/material.dart';

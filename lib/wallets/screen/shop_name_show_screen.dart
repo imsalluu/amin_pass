@@ -18,23 +18,50 @@ class _ShopNameShowScreenState extends State<ShopNameShowScreen> {
     const desktopBreakpoint = 900;
     final isDesktop = sw >= desktopBreakpoint;
 
-    // Mock data — replace with API later
     final List<Map<String, dynamic>> shops = [
       {
-        'name': 'Coffee Shop',
-        'logo': 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png',
+        'name': 'Starbucks',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/02/Starbucks-Logo.png',
       },
       {
-        'name': 'Gym Center',
-        'logo': 'https://cdn-icons-png.flaticon.com/512/2965/2965567.png',
+        'name': 'Nike',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/03/Nike-Logo.png',
       },
       {
-        'name': 'Bakery House',
-        'logo': 'https://cdn-icons-png.flaticon.com/512/4069/4069153.png',
+        'name': 'Apple',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2016/10/Apple-Logo.png',
+      },
+      {
+        'name': 'Amazon',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2016/10/Amazon-logo.png',
+      },
+      {
+        'name': 'Adidas',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/05/Adidas-logo.png',
+      },
+      {
+        'name': 'Netflix',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo.png',
+      },
+      {
+        'name': 'McDonald\'s',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/03/McDonalds-logo.png',
+      },
+      {
+        'name': 'Zara',
+        'logo':
+        'https://1000logos.net/wp-content/uploads/2017/05/Zara-logo.png',
       },
     ];
 
-    // 🔹 Shop card
+    // 🔹 Shop card widget
     Widget buildShopCard(Map<String, dynamic> shop) {
       return GestureDetector(
         onTap: () {
@@ -65,17 +92,37 @@ class _ShopNameShowScreenState extends State<ShopNameShowScreen> {
           ),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 28,
-                backgroundColor: isDark ? Colors.grey.shade800 : Colors.white,
-                backgroundImage: NetworkImage(shop['logo']),
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey.shade800 : Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color:
+                    isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                    width: 0.8,
+                  ),
+                ),
+                padding: const EdgeInsets.all(5), // ✅ smaller logo inside
+                child: ClipOval(
+                  child: Image.network(
+                    shop['logo'],
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.storefront,
+                      size: 20,
+                      color: isDark ? Colors.white54 : Colors.black54,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   shop['name'],
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.w600,
                     color: isDark ? Colors.white : Colors.black,
                   ),
@@ -83,7 +130,7 @@ class _ShopNameShowScreenState extends State<ShopNameShowScreen> {
               ),
               Icon(
                 Icons.arrow_forward_ios,
-                size: 18,
+                size: 16,
                 color: isDark ? Colors.white70 : Colors.black54,
               ),
             ],
@@ -102,26 +149,22 @@ class _ShopNameShowScreenState extends State<ShopNameShowScreen> {
     // 💻 Desktop layout
     if (isDesktop) {
       return Scaffold(
-        backgroundColor: isDark
-            ? theme.colorScheme.background
-            : const Color(0xFFF5F7FA), // neutral light tone
+        backgroundColor:
+        isDark ? theme.colorScheme.background : const Color(0xFFF5F7FA),
         body: Column(
           children: [
-            // Header bar
+            // Header
             Container(
               height: 80,
               width: double.infinity,
               color: const Color(0xFF7AA3CC),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Cards",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+              alignment: Alignment.center,
+              child: const Text(
+                "Cards",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -132,10 +175,7 @@ class _ShopNameShowScreenState extends State<ShopNameShowScreen> {
                   margin:
                   const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
                   decoration: BoxDecoration(
-                    // ✅ fixed color to remove red tint
-                    color: isDark
-                        ? Colors.grey.shade900
-                        : Colors.white, // explicitly white for light mode
+                    color: isDark ? Colors.grey.shade900 : Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isDark

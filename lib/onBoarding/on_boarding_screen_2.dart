@@ -1,4 +1,4 @@
-import 'package:amin_pass/auth/screen/on_boarding_screen_3.dart';
+import 'package:amin_pass/onBoarding/on_boarding_screen_3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

@@ -6,6 +6,7 @@ import 'package:amin_pass/profile/screen/transaction_history.dart';
 import 'package:amin_pass/profile/settings/screen/setting_screen.dart';
 import 'package:amin_pass/theme/app_color.dart';
 import 'package:amin_pass/theme/theme_provider.dart';
+import 'package:amin_pass/wallets/screen/add_to_wallet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -252,6 +253,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const QrCodeScreen()),
+            ),
+            iconColor: const Color(0xff7AA3CC),
+          ),
+          ProfileOption(
+            icon: Icons.wallet,
+            title: "Add to Wallet",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddToWalletScreen(shopName: "Starbucks")),
             ),
             iconColor: const Color(0xff7AA3CC),
           ),

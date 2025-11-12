@@ -1,3 +1,4 @@
+import 'package:amin_pass/common/screen/bottom_nav_bar.dart';
 import 'package:amin_pass/wallets/screen/add_to_apple_wallet_screen.dart';
 import 'package:amin_pass/wallets/screen/add_to_google_wallet_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class AddToWalletScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 🔹 Loyalty Card (blue card)
+          // 🔹 Loyalty Card
           Container(
             decoration: BoxDecoration(
               color: const Color(0xFF7AA3CC),
@@ -51,13 +52,9 @@ class AddToWalletScreen extends StatelessWidget {
                 Row(
                   children: List.generate(
                     7,
-                        (index) => const Padding(
+                    (index) => const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Icon(
-                        Icons.coffee,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                      child: Icon(Icons.coffee, color: Colors.white, size: 20),
                     ),
                   ),
                 ),
@@ -176,36 +173,62 @@ class AddToWalletScreen extends StatelessWidget {
       ),
     );
 
-    // 💻 Desktop / Web Layout (centered content, no container background)
+    // 💻 Desktop / Web Layout
     if (isDesktop) {
       return Scaffold(
         backgroundColor: isDark
             ? theme.colorScheme.background
             : const Color(0xFFF5F7FA),
-        body: Column(
+        body: Stack(
           children: [
-            // 🔸 Top Bar
-            Container(
-              height: 80,
-              width: double.infinity,
-              color: const Color(0xFF7AA3CC),
-              alignment: Alignment.center,
-              child: const Text(
-                "Cards",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+            Column(
+              children: [
+                Container(
+                  height: 80,
+                  width: double.infinity,
+                  color: const Color(0xFF7AA3CC),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Cards",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 600),
+                      child: content,
+                    ),
+                  ),
+                ),
+              ],
             ),
 
-            // 🔸 Centered scroll area (no extra background container)
-            Expanded(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600),
-                  child: content,
+            // 🟣 Skip button (top-right corner)
+            Positioned(
+              top: 25,
+              right: 25,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: Text(
+                  "Skip",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
@@ -214,7 +237,7 @@ class AddToWalletScreen extends StatelessWidget {
       );
     }
 
-    // 📱 Mobile Layout (unchanged)
+    // 📱 Mobile Layout
     return Scaffold(
       backgroundColor: isDark ? theme.colorScheme.background : Colors.white,
       appBar: AppBar(
@@ -229,6 +252,28 @@ class AddToWalletScreen extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BottomNavController(),
+                  ),
+                );
+              },
+              child: Text(
+                "Skip",
+                style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black87,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: content,
     );

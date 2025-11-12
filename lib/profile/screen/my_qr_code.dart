@@ -11,7 +11,7 @@ class QrCodeScreen extends StatelessWidget {
     final isDesktop = sw >= 900;
 
     final content = Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
